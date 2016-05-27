@@ -10,6 +10,9 @@ import { NotFound } from '../../ui/pages/not-found';
 import { RecoverPassword } from '../../ui/pages/recover-password';
 import { ResetPassword } from '../../ui/pages/reset-password';
 import { Signup } from '../../ui/pages/signup';
+import { Agenda } from '../../ui/pages/agenda';
+import { testEnregistrement } from '../../ui/pages/testEnregistrement';
+
 
 const requireAuth = (nextState, replace) => {
   if (!Meteor.loggingIn() && !Meteor.userId()) {
@@ -30,6 +33,8 @@ Meteor.startup(() => {
         <Route name="recover-password" path="/recover-password" component={ RecoverPassword } />
         <Route name="reset-password" path="/reset-password/:token" component={ ResetPassword } />
         <Route name="signup" path="/signup" component={ Signup } />
+        <Route name="agenda" path="/agenda" component={ Agenda } />
+        <Route name="testEnregistrement" path="/test" component = { testEnregistrement } />
         <Route path="*" component={ NotFound } />
       </Route>
     </Router>,

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Application description.",
   "scripts": {
-    "start": "meteor --settings settings-development.json",
+    "start": "meteor --settings settings-development.json --port $IP:$PORT",
     "test": "meteor test --driver-package practicalmeteor:mocha --port 5000",
     "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
     "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests",
@@ -65,6 +65,10 @@
     "react-dom": "^15.0.2",
     "react-komposer": "^1.8.0",
     "react-router": "^2.4.0",
-    "react-router-bootstrap": "^0.23.0"
+    "react-router-bootstrap": "^0.23.0",
+    "moment": "^2.13.0",
+    "fullcalendar": "^2.7.2",
+    "react-fontawesome": "^1.1.0"
+    
   }
 }
