@@ -2,9 +2,10 @@ import React from 'react';
 import { Jumbotron } from 'react-bootstrap';
 import { FormulaireEvenement } from '../components/formulaireEvenement';
 import {Modal, Popover, Tooltip, Button, OverlayTrigger} from 'react-bootstrap';
+import EvenementsList from '../containers/evenements-list.js';
 var moment = require('moment');
 
-moment.locale('fr', {
+moment.updateLocale('fr', {
     months : "janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre".split("_"),
     monthsShort : "janv._févr._mars_avr._mai_juin_juil._août_sept._oct._nov._déc.".split("_"),
     weekdays : "dimanche_lundi_mardi_mercredi_jeudi_vendredi_samedi".split("_"),
@@ -62,7 +63,8 @@ moment.locale('fr', {
         doy : 4  // The week that contains Jan 4th is the first week of the year.
     }
 });
-var aujourdhui = moment().format('dddd D MMMM YYYY');
+var aujourdhui = moment().format('dddd D MMMM YYYY');//format adapté au français
+var aujourdhuiDate = moment();
 
 var NEWEVE = 
   {
@@ -71,7 +73,7 @@ var NEWEVE =
       lieu: 'La Bonne Fabrique',
       places: 8,
       jours: 1,
-      date: aujourdhui,
+      date: aujourdhuiDate,
       creneaux: [{horaire: "14h00-18h00",
                 places: 8,
                 inscrits: 0}
@@ -123,7 +125,7 @@ export const ModalEvenement = React.createClass({
 
 export const testEnregistrement = () => (
   <Jumbotron className="text-center">
-    <h2>Test hop !</h2>
     <FormulaireEvenement evenement={NEWEVE}/>
+    <EvenementsList />
   </Jumbotron>
     )

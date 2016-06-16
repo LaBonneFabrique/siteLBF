@@ -3,23 +3,35 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 
 export const insertEvenement = new ValidatedMethod({
-  name: 'documents.insert',
-  validate: new SimpleSchema({
-    "title": {type: String},
-  "start": {type: Date},
-  "end": {type: Date},
-  "allDay": {type: Boolean},
-  "nbJours": {type: Number},
-  "type": {type: String},
-  "places": {type: Number},
-  "lieu": {type: String},
-  "description": {type: String},
-  "creneau": {type: [Object]},
-  "creneau.$.horaire": {type: String},
-  "creneau.$.places": {type: Number},
-  "creneau.$.inscrits": {type: Number}
-  }).validator(),
+  name: 'evenements.insert',
+  validate: Evenements.schema.validator(),
   run(evenement) {
     Evenements.insert(evenement);
+  },
+})
+
+export const removeEvenement = new ValidatedMethod({
+  name: 'evenements.remove',
+    validate: new SimpleSchema({
+    _id: { type: String },
+  }).validator(),
+  run({ _id }) {
+    Evenements.remove(_id);
+  },
+});
+
+export const updateEvenement = new ValidatedMethod({
+  name: 'evenements.update',
+  validate: new SimpleSchema({
+        evenementId: {
+            type: String
+        },
+        update: {
+            type: Object,
+            blackbox: true
+        }
+    }).validator(),
+  run({ evenementId, update }) {
+    Evenements.update(evenementId, { $set: update });
   },
 });

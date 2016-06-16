@@ -5,20 +5,8 @@ import { Factory } from 'meteor/dburles:factory';
 
 export const Evenements = new Meteor.Collection( 'evenements' );
 
-evenements.allow({
-  insert: () => false,
-  update: () => false,
-  remove: () => false
-});
-
-evenements.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true
-});
-
 Evenements.schema = new SimpleSchema({
-  "title": {
+  "titre": {
     type: String,
     label: "Le titre de l'activité"
   },
@@ -32,7 +20,7 @@ Evenements.schema = new SimpleSchema({
   },
   "allDay": {
     type: Boolean,
-    label: "Evénement à la journée"
+    label: "Evénement à la journée",
   },
   "nbJours": {
     type: Number,
@@ -45,7 +33,8 @@ Evenements.schema = new SimpleSchema({
     },
   "places": {
     type: Number,
-    label: "Le nombre de places de l'activité"
+    label: "Le nombre de places de l'activité",
+    optional: true
   },
   "lieu": {
     type: String,
@@ -53,25 +42,25 @@ Evenements.schema = new SimpleSchema({
   },
   "description": {
     type: String,
-    label: "Description de l'évènement"
+    label: "Description de l'évènement",
   },
-  "creneau": {
+  "creneaux": {
     type: [Object],
     label: "Horaire, nombre de places et d'inscrits"
   },
-  "creneau.$.horaire": {
+  "creneaux.$.horaire": {
     type: String,
     label: "Le créneau horaire"
   },
-  "creneau.$.places": {
+  "creneaux.$.places": {
     type: Number,
     label: "Le nombre de places dans le créneau"
   }
   ,
-  "creneau.$.inscrits": {
+  "creneaux.$.inscrits": {
     type: Number,
     label: "Le nombre d'inscrits dans le créneau (calculé)"
   }
 });
 
-evenements.attachSchema( Evenements.schema );
+Evenements.attachSchema( Evenements.schema );

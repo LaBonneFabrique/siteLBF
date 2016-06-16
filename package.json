@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Application description.",
   "scripts": {
-    "start": "meteor --settings settings-development.json --port $IP:$PORT",
+    "start": "meteor --settings settings-development.json --port http://91.134.132.54:8000/",
     "test": "meteor test --driver-package practicalmeteor:mocha --port 5000",
     "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
     "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests",
@@ -57,18 +57,18 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.6",
-    "jquery": "^2.2.3",
+    "faker": "^3.1.0",
+    "fullcalendar": "^2.7.2",
+    "jquery": "^2.2.4",
     "jquery-validation": "^1.15.0",
-    "react": "^15.0.2",
+    "moment": "^2.13.0",
+    "react": "^15.1.0",
     "react-addons-pure-render-mixin": "^15.0.2",
     "react-bootstrap": "^0.29.4",
-    "react-dom": "^15.0.2",
+    "react-dom": "^15.1.0",
+    "react-fontawesome": "^1.1.0",
     "react-komposer": "^1.8.0",
-    "react-router": "^2.4.0",
-    "react-router-bootstrap": "^0.23.0",
-    "moment": "^2.13.0",
-    "fullcalendar": "^2.7.2",
-    "react-fontawesome": "^1.1.0"
-    
+    "react-router": "^2.4.1",
+    "react-router-bootstrap": "^0.23.0"
   }
 }

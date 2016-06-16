@@ -32,3 +32,7 @@ practicalmeteor:mocha
 xolvio:backdoor
 mdg:validated-method
 dburles:factory@1.0.0
+accounts-github
+std:accounts-bootstrap
+service-configuration
+msavin:mongol

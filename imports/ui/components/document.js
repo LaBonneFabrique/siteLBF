@@ -24,14 +24,14 @@ const handleRemoveDocument = (documentId, event) => {
   // this should be replaced with a styled solution so for now we will
   // disable the eslint `no-alert`
   // eslint-disable-next-line no-alert
-  if (confirm('Are you sure? This is permanent.')) {
+  if (confirm('Sûr-e ? L\'action est permanente')) {
     removeDocument.call({
       _id: documentId,
     }, (error) => {
       if (error) {
         Bert.alert(error.reason, 'danger');
       } else {
-        Bert.alert('Document removed!', 'success');
+        Bert.alert('Evénement effacé !', 'success');
       }
     });
   }

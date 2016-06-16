@@ -1,9 +1,13 @@
 import React from 'react';
-import {FormGroup, ControlLabel, FormControl, HelpBlock, Col, Row, Checkbox, Button, Glyphicon} from 'react-bootstrap';
+import ReactDom from 'react-dom';
+import {FormGroup, ControlLabel, FormControl, Col, Row, Checkbox, Button} from 'react-bootstrap';
+import { Bert } from 'meteor/themeteorchef:bert';
+import {insertEvenement, updateEvenement} from '../../api/evenements/methods.js';
+
 var FontAwesome = require('react-fontawesome');
 var moment = require('moment');
 moment.locale('fr');
-    var marges = 5;
+var marges = 5;
 
 var ListeCreneaux = React.createClass(
   {
@@ -70,17 +74,90 @@ var ListeCreneaux = React.createClass(
       )
     }
   });
+  
+
 
 export const FormulaireEvenement = React.createClass({
 getInitialState() {
-    return {
+      return {
      creneaux: this.props.evenement.creneaux,
      journee: false,
-     totalPlaces: 8
+     totalPlaces: 8,
+     titreEve: this.props.evenement.titre,
+     start:  this.props.evenement.start,
+     jours: this.props.evenement.jours
     };
   },
   
-  calculPlaces: function(listeCreneaux) {
+onClic: function () {
+  this.handleAjoutEve(event);
+
+},
+
+handleAjoutEve: function(event) {
+  
+  const titre = ReactDom.findDOMNode(this.refs.titreEve).value;
+  const nbJours = Number(ReactDom.findDOMNode(this.refs.nbJours).value);
+  const type = ReactDom.findDOMNode(this.refs.structure).value;
+  const lieu = ReactDom.findDOMNode(this.refs.lieu).value;
+  const description = ReactDom.findDOMNode(this.refs.descriptionEve).value;
+  const allDay = this.state.journee;
+  
+  let start = moment().toDate()
+  let end = moment().toDate();
+  
+    const creneaux = this.state.creneaux;
+
+  switch (this.props.operation) {
+    case 'add':
+      start = this.state.start.toDate();
+      const duree = moment.duration({'days' : nbJours});
+      end = allDay ? moment(this.state.start).add(duree).toDate() : start;
+      let evenement = {titre, start, end, allDay, nbJours, type, lieu, description, creneaux,
+        };
+      console.log(evenement)
+      insertEvenement.call(evenement, (error) => {
+          if (error) {
+            Bert.alert(error.reason, 'danger');
+          } else {
+            Bert.alert('Evénement créé avec succès.', 'success');
+              this.props.fermer();
+            }
+        });
+      break;
+    case 'edit':
+      start = this.props.evenement.start;
+      end = this.props.evenement.end;
+      
+      let evenementId = this.props.eveId;
+        let update = {titre, start, end, allDay, nbJours, type, lieu, description, creneaux, };
+      updateEvenement.call({evenementId, update}, (error) => {
+      if (error) {
+        Bert.alert(error.reason, 'danger');
+      } else {
+        Bert.alert('Evénement modifié avec succès.', 'success');
+          this.props.fermer();
+      }
+    });
+    
+      break;
+    default:
+      break;
+  }
+},
+
+handleChangeForm: function(e, nomState) {
+  switch (nomState) {
+    case "titreEve": 
+    this.setState({ titreEve: e.target.value });
+    break;
+    default:
+      break;
+  }
+
+},
+  
+calculPlaces: function(listeCreneaux) {
     var nbPlaces = 0
     listeCreneaux.forEach(function(creneau) {
       nbPlaces=nbPlaces+creneau.places;
@@ -89,14 +166,14 @@ getInitialState() {
     return nbPlaces;
   },
 
-  handleRetraitCreneau(i) {
+handleRetraitCreneau: function(i) {
   var listeCreneaux =this.state.creneaux;
   var creneauRetire = listeCreneaux.splice(i,1);
   var nbPlaces = this.calculPlaces(listeCreneaux)
   this.setState({creneaux:listeCreneaux, journee: this.state.journee, totalPlaces: nbPlaces});
   },
   
-  handleAjoutCreneau() {
+handleAjoutCreneau: function() {
     var placeRandom = Math.floor((Math.random() * 10) + 1);
     var listeCreneaux =this.state.creneaux;
     var nbCreneaux = listeCreneaux.push({horaire: "14h01-18h00",
@@ -106,14 +183,14 @@ getInitialState() {
     this.setState({creneaux:listeCreneaux, journee: this.state.journee, totalPlaces: nbPlaces});
   },
   
-  checkBoxChanged: function() {
+checkBoxChanged: function() {
     var change=true;
     this.state.journee?change=false:change=true;
     this.setState({creneaux:this.state.creneaux, journee: change, totalPlaces: this.state.totalPlaces});
   },
   
-  render: function() {
-    console.log(this.state.totalPlaces)
+render: function() {
+   
    if(!this.state.journee) {
      var affichageCreneaux =     
      <formGroup>
@@ -134,13 +211,14 @@ getInitialState() {
      var affichageCreneaux = null;
    }
     return (
-      <form>
+      <form >
       <Row style={{marginBottom: marges+'px'}}>
       <Col xs={12} sm={8}>
        <FormGroup>
        <label for="title">Titre</label>
        <FormControl
             type="text"
+            ref="titreEve"
             defaultValue={this.props.evenement.titre}
             placeholder="Titre de l'évènement"
           />
@@ -149,11 +227,11 @@ getInitialState() {
        <Col xs={12} sm={4}>
        <FormGroup>
        <label for="type">Proposé par</label>
-        <FormControl componentClass="select" placeholder="select" defaultValue={this.props.evenement.par}>
-        <option value="La Bonne Fabrique">La Bonne Fabrique</option>
-        <option value="Le Coworking">L'espace coworking</option>
-        <option value="La micro brasserie">La micro brasserie</option>
-        <option value="La Salle des Machines">La Salle des Machines</option>
+        <FormControl componentClass="select" placeholder="select" defaultValue={this.props.evenement.par} ref="structure">
+        <option value="La-Bonne-Fabrique">La Bonne Fabrique</option>
+        <option value="Le-Coworking">L'espace coworking</option>
+        <option value="La-micro-brasserie">La brasserie</option>
+        <option value="La-Salle-des-Machines">La Salle des Machines</option>
         <option value="Autres">Autres</option>
       </FormControl>
        </FormGroup>
@@ -178,6 +256,7 @@ getInitialState() {
             type="text"
             defaultValue={this.props.evenement.lieu}
             placeholder="Lieu où se tient l'évènement"
+            ref="lieu"
           />
         </Col>
         <Col xs={12} sm={2}>
@@ -186,6 +265,7 @@ getInitialState() {
             defaultValue={this.state.totalPlaces}
             placeholder="Nombre de places disponibles"
             disabled={!this.state.journee}
+            ref="nbPlacesTotal"
           />
         </Col>
         
@@ -195,6 +275,7 @@ getInitialState() {
             defaultValue={this.props.evenement.jours}
             placeholder="Si sur plusieurs jours"
             disabled={!this.state.journee}
+            ref="nbJours"
           />
         </Col>
     <Col xs={12} sm={3}>
@@ -214,13 +295,19 @@ getInitialState() {
       </Row>
       
       {affichageCreneaux}
-    <Row>  
+    <Row style={{marginBottom: marges+'px'}}>  
       <FormGroup controlId="formControlsTextarea">
       <Col xs={12} sm={6}>
       <ControlLabel>Description</ControlLabel>
-      <FormControl componentClass="textarea" placeholder="Description..." />
+      <FormControl componentClass="textarea" placeholder="Description..."  ref="descriptionEve" defaultValue={this.props.evenement.description}/>
       </Col>
     </FormGroup>
+</Row>
+<Row style ={{textAlign: 'right'}}>
+    <Button bsStyle="warning" style={{marginRight: marges+'px'}} onClick={this.props.fermer}>Annuler</Button>
+
+    <Button bsStyle="success" onClick={this.onClic}>{this.props.operation=='edit'?'Modifier':'Créer'}</Button>
+
 </Row>
       </form>
 
