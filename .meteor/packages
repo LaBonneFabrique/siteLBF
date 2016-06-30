@@ -36,3 +36,5 @@ accounts-github
 std:accounts-bootstrap
 service-configuration
 msavin:mongol
+accounts-facebook
+accounts-twitter

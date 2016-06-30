@@ -13,7 +13,7 @@ const handleRecovery = () => {
     if (error) {
       Bert.alert(error.reason, 'warning');
     } else {
-      Bert.alert('Check your inbox for a reset link!', 'success');
+      Bert.alert('Le lien a été envoyé avec succès!', 'success');
     }
   });
 };
@@ -28,8 +28,8 @@ const validate = () => {
     },
     messages: {
       emailAddress: {
-        required: 'Need an email address here.',
-        email: 'Is this email address legit?',
+        required: 'Merci de renseigner l\'adresse mail.',
+        email: 'Cette adresse ne semble pas valide',
       },
     },
     submitHandler() { handleRecovery(); },

@@ -3,4 +3,5 @@ import './browser-policy';
 import './fixtures';
 import './api';
 import './configureServices';
+import './onCreateUser';
 

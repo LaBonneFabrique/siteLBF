@@ -18,9 +18,27 @@ export class LoginModal extends React.Component {
   render() {
     return (
     <Modal.Body>
-    <Row>
+           <Row>
+           <Col xs={ 12 } sm={ 1 } md={ 1 }></Col>
+          <Col xs={ 12 } sm={ 11 } md={ 11 }>
+                   <h4>Utilisez l'un des services suivants pour vous identifier</h4>
+          </Col>
     <Col xs={ 12 } sm={ 2 } md={ 2 }></Col>
-      <Col xs={ 12 } sm={ 8 } md={ 8 }>
+      <Col xs={ 12 } sm={ 10 } md={ 10 }>
+
+            <LoginWithServices />
+  </Col>
+          <Col xs={ 12 } sm={ 2 } md={ 2 }></Col>
+    </Row>
+    <Row>
+    <Col xs={ 12 } sm={ 1 } md={ 1 }></Col>
+          <Col xs={ 12 } sm={ 11 } md={ 11 }>
+      <h4>Utilisez le formulaire ci-dessous</h4>
+      <p>si vous ne voulez pas passer par des services externes.</p>
+      </Col>
+    <Col xs={ 12 } sm={ 2 } md={ 2 }></Col>
+      <Col xs={ 12 } sm={ 6 } md={ 6 }>
+    
         <form ref="login" className="login" onSubmit={ this.handleSubmit }>
           <FormGroup>
             <ControlLabel>Adresse mail</ControlLabel>
@@ -34,7 +52,7 @@ export class LoginModal extends React.Component {
           <FormGroup>
             <ControlLabel>
               <span className="pull-left">Mot de passe</span>
-              <Link className="pull-right" to="/recover-password">Un oubli ?</Link>
+              <Link className="pull-right" to="/recover-password" onClick={this.props.fermer}>Un oubli ?</Link>
             </ControlLabel>
             <FormControl
               type="password"
@@ -48,14 +66,7 @@ export class LoginModal extends React.Component {
         </Col>
           <Col xs={ 12 } sm={ 2 } md={ 2 }></Col>
         </Row>
-        <Row>
-    <Col xs={ 12 } sm={ 2 } md={ 2 }></Col>
-      <Col xs={ 12 } sm={ 8 } md={ 8 }>
-        <h4>Ou connectez-vous aves les services suivants</h4>
-            <LoginWithServices />
-  </Col>
-          <Col xs={ 12 } sm={ 2 } md={ 2 }></Col>
-    </Row></Modal.Body>
+ </Modal.Body>
     )
   }
 }

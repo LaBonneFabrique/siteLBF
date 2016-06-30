@@ -15,7 +15,7 @@ const login = () => {
     if (error) {
       Bert.alert(error.reason, 'warning');
     } else {
-      Bert.alert('Logged in!', 'success');
+      Bert.alert('Vous êtes maintenant identifié', 'success');
 
       const { location } = component.props;
       if (location.state && location.state.nextPathname) {
@@ -40,11 +40,11 @@ const validate = () => {
     },
     messages: {
       emailAddress: {
-        required: 'Need an email address here.',
-        email: 'Is this email address legit?',
+        required: 'Merci de renseigner l\'adresse mail.',
+        email: 'Cette adresse ne semble pas valide',
       },
       password: {
-        required: 'Need a password here.',
+        required: 'Merci d\'entrer un mot de passe.',
       },
     },
     submitHandler() { login(); },
@@ -53,5 +53,6 @@ const validate = () => {
 
 export const handleLogin = (options) => {
   component = options.component;
+
   validate();
 };

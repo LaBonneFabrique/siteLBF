@@ -10,7 +10,6 @@ const composer = (params, onData) => {
 
  
   const users = Users.find().fetch();
-
   if (users.length>0) {
     onData(null, { users });
   }

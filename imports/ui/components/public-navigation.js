@@ -1,21 +1,33 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
 import { Nav, NavItem } from 'react-bootstrap';
-import {LoginModal} from './loginModal'
+import {LoginModal} from './loginModal';
+import {Inscription} from './inscriptionModal';
+import {Identification} from './identificationModal';
 
 export const PublicNavigation = React.createClass({
       getInitialState() {
     return {
-      showModal: false,
+      showModalInscription: false,
+      showModalIdentification: false
     }
       },
-toggleModal: function (event) {
+toggleModal: function (quelModal) {
+  switch(quelModal) {
+    case 'identification':
+      this.setState({showModalIdentification: true});
+      break;
+    case 'inscription':
+      this.setState({showModalInscription: true});
+      break;
+    default:
+      break;
+      
+  }
 
-  this.setState({showModal: true})
 },
 close: function () {
-  this.setState({showModal: false})
+  this.setState({showModalInscription: false, showModalIdentification: false})
 },
 
 render:function () {
@@ -23,15 +35,20 @@ render:function () {
   return (
     <div>
   <Nav pullRight>
-    <LinkContainer to="login">
-      <NavItem eventKey={ 1 } onClick={this.toggleModal}>Connexion</NavItem>
-    </LinkContainer>
+    <NavItem eventKey={ 1 } onClick={() => this.toggleModal('inscription')}>S'inscrire</NavItem>
+    <NavItem eventKey={ 2 } onClick={() => this.toggleModal('identification')}>S'identifier</NavItem>
   </Nav>
-  <Modal show={this.state.showModal} onHide={this.close}>
+  <Modal show={this.state.showModalIdentification} onHide={this.close}>
           <Modal.Header closeButton>
             <Modal.Title>Connexion</Modal.Title>
           </Modal.Header>
-  <LoginModal />
+ <Inscription fermer={this.close} type="connexion"/>
+  </Modal>
+    <Modal show={this.state.showModalInscription} onHide={this.close}>
+          <Modal.Header closeButton>
+            <Modal.Title>S'inscrire</Modal.Title>
+          </Modal.Header>
+  <Inscription fermer={this.close} type="inscription"/>
   </Modal>
 </div>
   )

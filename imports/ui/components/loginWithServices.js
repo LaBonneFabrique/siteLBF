@@ -1,18 +1,30 @@
 import React from 'react';
-import {Button, Row} from 'react-bootstrap';
+import {Button, Row, Col} from 'react-bootstrap';
 import { Bert } from 'meteor/themeteorchef:bert';
-import { Accounts } from 'meteor/accounts-base'
+import FontAwesome from 'react-fontawesome';
 
 import { browserHistory } from 'react-router'
 
 var services = [{
   service: 'github',
-  texte: 'Connexion avec Github',
+  texte: 'Github',
   dataSocialLogin: 'loginWithGithub'
-}]
+},
+{
+  service: 'facebook',
+  texte: 'Facebook',
+  dataSocialLogin: 'loginWithFacebook'
+},
+{
+  service: 'twitter',
+  texte: 'Twitter',
+  dataSocialLogin: 'loginWithTwitter'
+}
+]
 
 export const LoginWithServices = React.createClass({
   onClic: function(dataSocialLogin) {
+    console.log(dataSocialLogin)
     const options = {};
    
     Meteor[ dataSocialLogin ]( options, ( error ) => {
@@ -25,13 +37,14 @@ export const LoginWithServices = React.createClass({
   
   },
   render: function() {
-    return (<ul>
+    console.log(this.props.donnees)
+    return (<Row>
+     
     {services.map((service) => (
-    <li key={service.service}>
-    <Button onClick={() => (this.onClic(service.dataSocialLogin))}> {service.texte} </Button>
-    </li>
+    <Button  bsStyle="primary" className="btn-space" key={service.service} onClick={() => (this.onClic(service.dataSocialLogin))}><FontAwesome name={service.service} size='2x'/> {service.texte} </Button>
     ))}
-    </ul>
+  
+    </Row>
     );
   }
   

@@ -4,12 +4,13 @@ import { IndexLinkContainer, LinkContainer } from 'react-router-bootstrap';
 import { Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { Meteor } from 'meteor/meteor';
 
-const handleLogout = () => Meteor.logout(() => browserHistory.push('/login'));
+const handleLogout = () => Meteor.logout(() => browserHistory.push('/'));
 
 const userName = () => {
   const user = Meteor.user();
-  const name = user && user.profile ? user.profile.name : '';
-  return user && name!=''? 'bob':'bib';//`${name.first} ${name.last}` : '';
+  const nom = user && user.profile ? user.profile.nom : '';
+  const prenom = user && user.profile ? user.profile.prenom : '';
+  return user && nom!='' && prenom!=''? `${prenom} ${nom}`:'bib';//`${name.first} ${name.last}` : '';
 };
 
 export const AuthenticatedNavigation = () => (
@@ -18,14 +19,11 @@ export const AuthenticatedNavigation = () => (
       <IndexLinkContainer to="/">
         <NavItem eventKey={ 1 } href="/">Index</NavItem>
       </IndexLinkContainer>
-      <LinkContainer to="/documents">
-        <NavItem eventKey={ 2 } href="/documents">Documents</NavItem>
+      <LinkContainer to="/pageAdherent">
+        <NavItem eventKey={ 2 } href="/pageAdherent">Tableau de bord</NavItem>
       </LinkContainer>
       <LinkContainer to="/agenda">
         <NavItem eventKey={ 3 } href="/agenda">Agenda</NavItem>
-      </LinkContainer>
-      <LinkContainer to="/test">
-        <NavItem eventKey={ 4 } href="/test">Test</NavItem>
       </LinkContainer>
     </Nav>
     <Nav pullRight>
