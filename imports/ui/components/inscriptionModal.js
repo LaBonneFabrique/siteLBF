@@ -1,8 +1,32 @@
 import React from 'react';
-import { Row, Col, FormGroup, ControlLabel, FormControl, Button, Checkbox, Radio } from 'react-bootstrap';
 import { handleInscription } from '../../modules/inscription';
-import {Modal} from 'react-bootstrap';
 import FontAwesome from 'react-fontawesome';
+//bascule vers Material-ui
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
+import Checkbox from 'material-ui/Checkbox';
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+//inlinegrid
+import { Grid, Row, Cell } from 'react-inline-grid';
+
+const optionsGrid = {
+  columns: 12,
+  gutter: 16,
+  margin: 0
+};
+//style formulaire
+const styles = {
+checkbox: {
+  display:"inline-block",
+  width: '30%',
+  marginRight: '3%'
+},
+  centPourCent: {
+    width: '100%',
+    padding: '0px',
+    margin: '0px'
+  }
+};
 
 export class Inscription extends React.Component {
   constructor(props) {
@@ -11,6 +35,7 @@ export class Inscription extends React.Component {
       services: true,
       donnees: {}
     };
+    this.toggleChekboxService=this.toggleChekboxService.bind(this)
   }
   
   componentDidMount() {
@@ -25,129 +50,122 @@ export class Inscription extends React.Component {
     event.preventDefault();
   }
   
-  toggleChekboxService() {
+  toggleChekboxService(event, value) {
     var etat = !this.state.services;
-    this.setState ({services: etat});
-  }
-  
-  renderMDPVerif() {
-    if (this.props.type=="inscription") {
-      return (
-                          <Row>
-              <ControlLabel>
-              <span className="pull-left">Vérification du mot de passe</span>
-            </ControlLabel>
-            <FormControl
-              type="password"
-              ref="passwordVerif"
-              name="passwordVerif"
-              placeholder="Vérification du mot de passe"
-            />
-        </Row>
-        )
-    } else {
-      return(
-        <Row ><Col smOffset={6} sm={5} className="pull-right"> <a href="oubliMDP"><b>Mot de passe oublié ?</b></a></Col></Row>
-        )}
-  }
-  
-  renderNomPrenom() {
-    if (this.props.type=="inscription")  {
-    return (
-              <Row>
-<Col xs={ 12 } sm={ 6 } md={ 6 }>
-<FormGroup>
-            <ControlLabel>Prénom</ControlLabel>
-            <FormControl
-              type="text"
-              ref="prenom"
-              name="prenom"
-              placeholder="Prénom"
-            />
-          </FormGroup>
-</Col>
-<Col xs={ 12 } sm={ 6 } md={ 6 }>
-<FormGroup>
-            <ControlLabel>Nom</ControlLabel>
-            <FormControl
-              type="text"
-              ref="nom"
-              name="nom"
-              placeholder="Nom"
-            />
-          </FormGroup>
-</Col>
-</Row>
-      )
-    } else return ("");
-  }
-  
-  renderTypeFormulaire() {
-    if (this.state.services) {
-      return(
-        <FormGroup name="groupeRadio" ref="loginWithService">
-        <p>Choisissez l'un des services suivants pour vous inscrire</p>
-       <Col xs={ 12 } sm={ 12 } md={ 4 }> 
-      <Radio name="service" value="loginWithFacebook"><FontAwesome name="facebook" /> Facebook</Radio>
-      </Col>
-      <Col xs={ 12 } sm={ 12 } md={ 4 }> 
-      <Radio name="service" value="loginWithTwitter"><FontAwesome name="twitter" /> Twitter</Radio>
-      </Col>
-      <Col xs={ 12 } sm={ 12 } md={ 4 }> 
-      <Radio name="service" value="loginWithGithub"><FontAwesome name="github" /> Github</Radio>
-      </Col>
-      </FormGroup>
-      );
-    } else {
-      return( 
-                  <FormGroup ref="loginWithPassword">
-                  <Row>
-            <ControlLabel>
-              <span className="pull-left">Mot de passe</span>
-            </ControlLabel>
-            <FormControl
-              type="password"
-              ref="password"
-              name="password"
-              placeholder="Mot de passe"
-            />
-            </Row>
-
-      {this.renderMDPVerif()}
-
-          </FormGroup>
-        );
-    }
+    setTimeout(() =>this.setState ({services: etat}));
   }
   
   render() {
-    return (
-    <Modal.Body>
-     <Row>
-    <Col xs={ 12 } sm={ 1 } md={ 1 }></Col>
-      <Col xs={ 12 } sm={ 10 } md={ 10 }>
-        <form ref="inscription" className="inscription" onSubmit={ this.handleSubmit }>
-        {this.renderNomPrenom()}
-          <FormGroup>
-            <ControlLabel>Adresse mail</ControlLabel>
-            <FormControl
-              type="email"
-              ref="emailAddress"
-              name="emailAddress"
-              placeholder="Adresse mail"
-            />
-          </FormGroup>
-         <FormGroup>
-         <Checkbox onChange={this.toggleChekboxService.bind(this)} ref="choix" name="choix" defaultValue="checked">Ne pas utiliser Facebook, Twitter ou Github</Checkbox>
-         </FormGroup>
-      {this.renderTypeFormulaire()}
-
+   
+      const  renderTypeFormulaire =  this.state.services ?
+      <div>
+      <p>Choisissez l'un des services suivants pour vous inscrire :</p>
+      <RadioButtonGroup name="service">
+          <RadioButton
+            value="loginWithFacebook"
+            label="Facebook"
+            style={styles.checkbox}
+            uncheckedIcon={<FontAwesome name="facebook" size="2x"/>}
+          />
+          <RadioButton
+            value="loginWithTwitter"
+            label="Twitter"
+            style={styles.checkbox}
+            uncheckedIcon={<FontAwesome name="twitter" size="2x"/>}
+          />
+          <RadioButton
+            value="loginWithGithub"
+            label="Github"
+            style={styles.checkbox}
+            uncheckedIcon={<FontAwesome name="github" size="2x"/>}
+          />
           
-        <Button type="submit" bsStyle="warning" className="pull-right btn-spaceTop">{this.props.type=="inscription"?"S'inscrire":"Connexion"}</Button> 
+          </RadioButtonGroup>
+     </div>
+        : 
+        <div>
+        <Row is="nospace">
+          <Cell is="12">
+        <TextField
+            style={styles.centPourCent}
+            type="password"
+            ref="password"
+            name="password"
+            placeholder="Mot de passe"
+            floatingLabelStyle={styles.floatingLabel}
+          /></Cell></Row>
+          <Row is="nospace">
+          <Cell is="12">
+        <TextField
+            style={styles.centPourCent}
+            type="password"
+            ref="passwordVerif"
+              name="passwordVerif"
+              placeholder="Vérification du mot de passe"
+            floatingLabelStyle={styles.floatingLabel}
+          /></Cell></Row>
+         </div>;
+
+    
+    
+    return (
+        <Grid
+            options={optionsGrid}
+          >
+        <form ref="inscription" className="inscription" onSubmit={ this.handleSubmit }>
+          <Row is="nospace">
+          <Cell is="6 phone-12">
+          <TextField
+                style={styles.centPourCent}
+                type="text"
+                ref="prenom"
+                name="prenom"
+                placeholder="Prénom"
+              />
+          </Cell>
+          <Cell is="6 phone-12">
+             <TextField
+                style={styles.centPourCent}
+                type="text"
+                ref="nom"
+                name="nom"
+                placeholder="Nom"
+              />
+          </Cell></Row>
+        <Row is="nospace"><Cell is="12">
+        <TextField
+            style={styles.centPourCent}
+            type="email"
+            ref="emailAddress"
+            name="emailAddress"
+            placeholder="Adresse Mail"
+          />
+          </Cell></Row>
+          <Row is="nospace"><Cell is="12">
+        <Checkbox
+          label="Ne pas utiliser Facebook, Twitter ou Github"
+          style={styles.centPourCent}
+          onCheck={this.toggleChekboxService}
+          ref="choix"
+          name="choix"
+        />
+        </Cell></Row>
+
+          {renderTypeFormulaire}
+
+          <Row is="end"><Cell is="12">
+        <FlatButton
+          type="submit"
+          label="S'inscrire"
+          labelPosition="before"
+          primary={true}
+          style={styles.button}
+                  />
+        </Cell></Row>
         </form>
-        </Col>
-        </Row>
-   </Modal.Body>
-    )
+      </Grid>
+
+
+    );
   }
 }

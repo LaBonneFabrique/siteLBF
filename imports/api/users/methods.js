@@ -1,6 +1,7 @@
 import { Users } from './users';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
+import {Roles} from 'meteor/alanning:roles';
 
 export const updateProfile = new ValidatedMethod({
   name: 'user.updateProfile',
@@ -32,6 +33,18 @@ export const updateProfile = new ValidatedMethod({
     },
     "update.emails.$.verified": {
       type: Boolean
+    },
+    "update.adhesionFamille": {
+      type:Boolean
+    },
+    "update.famille": {
+      type: [Object]
+    },
+    "update.reglageService": {
+      type: Boolean
+    },
+    "update.roles": {
+      type: [String]
     }
   }).validator(),
   run({ usereId, update }) {
@@ -50,18 +63,100 @@ export const updateReglageService = new ValidatedMethod({
     }
   }).validator(),
   run({userId, update}) {
-    Users.update(userId, {$set: update})
+    Users.update(userId, {$set: update});
   }
+});
+
+export const ajoutMembreFamille = new ValidatedMethod({
+  name: 'user.ajoutMembreFamille',
+  validate: new SimpleSchema({
+    "userId": {
+      type: String,
+      optional: true
+    },
+    "update.famille": {
+      type: Array,
+      optional: true
+    },
+    
+    "update.famille.$": {
+      type: Object,
+      optional: true
+    },
+    "update.famille.$._id": {
+      type: String
+    },
+    "update.famille.$.nom": {
+      type: String,
+      optional: true
+    },
+    "update.famille.$.prenom": {
+      type: String,
+      optional: true
+    },
+    "update.famille.$.age": {
+      type: Date,
+      optional: true
+    },
+    "update.famille.$.inscriptions": {
+      type: [String],
+      optional: true
+    },
+}).validator(),
+  run({userId, update}) {
+    Users.update(userId, {$set: update});
+  }
+  
+});
+
+export const updateFamille = new ValidatedMethod({
+  name: 'user.updateFamille',
+  validate: new SimpleSchema ({
+    userId: {
+      type: String
+    },
+    update: {
+      type: Object
+    },
+    'update.famille': {
+      type: [Object]
+    },
+    'update.famille.$._id': {
+        type: String
+    },
+    'update.famille.$.prenom': {
+        type: String,
+        optional: true
+    },
+    'update.famille.$.nom': {
+        type: String,
+        optional: true
+    },
+    'update.famille.$.age': {
+      type: Date,
+      optional: true
+    },
+    'update.famille.$.inscriptions': {
+        type: [String],
+        optional: true
+    }
+  }).validator(),
+  run({ userId, update }) {
+  Users.update(userId, { $set: update });
+  },
 })
 
-/*
-export const removeDocument = new ValidatedMethod({
-  name: 'documents.remove',
+export const updateRoles = new ValidatedMethod({
+  name: 'user.updateRoles',
   validate: new SimpleSchema({
-    _id: { type: String },
+    userId: {
+      type: String
+    },
+    newRoles: {
+      type: [String]
+    }
   }).validator(),
-  run({ _id }) {
-    Documents.remove(_id);
-  },
-});
-*/
+  run({userId, newRoles}) {
+    Roles.setUserRoles(userId, newRoles);
+  }
+})

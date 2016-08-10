@@ -24,7 +24,6 @@ var services = [{
 
 export const LoginWithServices = React.createClass({
   onClic: function(dataSocialLogin) {
-    console.log(dataSocialLogin)
     const options = {};
    
     Meteor[ dataSocialLogin ]( options, ( error ) => {
@@ -37,7 +36,6 @@ export const LoginWithServices = React.createClass({
   
   },
   render: function() {
-    console.log(this.props.donnees)
     return (<Row>
      
     {services.map((service) => (

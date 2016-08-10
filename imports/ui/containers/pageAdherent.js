@@ -7,7 +7,7 @@ import { Meteor } from 'meteor/meteor';
 const composer = (params, onData) => {
   const subscription = Meteor.subscribe('utilisateurs');
   if (subscription.ready()) {
-  let IdUtilisateur = Meteor.userId()
+  let IdUtilisateur = Meteor.userId();
 
   const loggedUser = Users.findOne({_id: IdUtilisateur},{});
 

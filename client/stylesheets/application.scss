@@ -1,3 +1,6 @@
+// import font roboto from google
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,bold);
+
 @import "base/extends";
 @import "base/animations";
 @import "base/forms";
@@ -9,5 +12,9 @@
 @import "state/navbar";
 
 @import "lbf/principal";
+@import "lbf/grilleAccueil";
+@import "lbf/contenu";
+@import "lbf/navigation";
+
 
 

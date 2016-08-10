@@ -1,6 +1,6 @@
 import { composeWithTracker } from 'react-komposer';
 import { Loading } from '../components/loading.js';
-import {UsersList} from   '../components/users-list.js'
+import {UsersList} from   '../components/users-list.js';
 import { Users } from '../../api/users/users.js';
 import { Meteor } from 'meteor/meteor';
 

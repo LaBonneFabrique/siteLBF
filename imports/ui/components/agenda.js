@@ -1,8 +1,12 @@
 import React from 'react';
 import moment from 'moment';
-import {Modal} from 'react-bootstrap';
+//import {Modal} from 'react-bootstrap';
 import { FormulaireEvenement } from '../components/formulaireEvenement';
 import {updateEvenement} from '../../api/evenements/methods.js';
+import {Random} from 'meteor/random';
+
+//bascule vers materialize-ui
+import Dialog from 'material-ui/Dialog';
 
 import $ from 'jquery';
 import fullCalendar from 'fullcalendar';
@@ -10,7 +14,12 @@ import 'fullcalendar/dist/lang/fr';
 import { Bert } from 'meteor/themeteorchef:bert';
 
 var aujourdhuiDate = moment();
-
+const styles= {
+  titre: {
+    padding: '5px',
+    margin: '0px'
+  }
+}
 
 let isPast = ( date ) => {
   let today = moment().format();
@@ -20,38 +29,38 @@ let isPast = ( date ) => {
 
 const Calendar = React.createClass({
       getInitialState() {
+    const creneauId = Random.id();
     return {
         eveId: '',
         showModal: false,
         render:false,
         operation: 'add',
         NEWEVE: {
-      titre: 'bobo !',
-      par: 'La Bonne Fabrique',
+      titre: 'Nouvel évènement',
+      par: 'La-Bonne-Fabrique',
       lieu: 'La Bonne Fabrique',
-      places: 8,
+      nbTotalPlaces: 8,
       jours: 1,
       date: aujourdhuiDate,
-      creneaux: [{horaire: "14h00-18h00",
+      creneaux: [{_id:creneauId,
+                horaire: "14h00-18h00",
                 places: 8,
-                inscrits: 0}
-                ]
+                inscrits: []}
+                ],
+      inscription: false,
+      lienImage:""
     }
     };
   },
 
   close() {
-    const { calendar } = this.refs;
     this.setState({ showModal: false });
-    
-
   },
 
   open() {
     this.setState({ showModal: true });
   },
   componentDidMount() {
-          
     const { calendar } = this.refs;
     const evenements = this.props.evenements;
 
@@ -63,7 +72,6 @@ const Calendar = React.createClass({
       events( start, end, timezone, callback ) {
       let data = evenements.map( ( event ) => {
         event.editable = !isPast( event.start );
-        console.log(event.end)
         return event;
       });
 
@@ -73,46 +81,58 @@ const Calendar = React.createClass({
     },
     eventRender( event, element ) {
       element.find( '.fc-content' ).html(
-        `<h4>${ event.titre }</h4>`
+        `<h6>${ event.titre }</h6>`
       );
     },
     dayClick( date ) {
-      self.setState({operation: 'add'})
+
+      self.setState({operation: 'add'});
         if (!isPast(date)) {
+          const creneauId = Random.id();
    const nouveau = {
-      titre: 'bobo !',
-      par: 'La Bonne Fabrique',
+      titre: 'Nouvel événement',
+      par: 'La-Bonne-Fabrique',
       lieu: 'La Bonne Fabrique',
-      places: 8,
+      nbTotalPlaces: 8,
       jours: 1,
       start: date,
       end: date,
       description: 'une description de l\'événement',
-      creneaux: [{horaire: "14h00-18h00",
+      creneaux: [{_id: creneauId,
+                horaire: "14h00-18h00",
                 places: 8,
-                inscrits: 0}
-                ]
+                inscrits: []}
+                ],
+      inscription: false,
+      lienImage:""
     };
      self.setState({NEWEVE: nouveau});
      self.open();
+        } else {
+          Bert.alert("Impossible de créer un évènement dans passé.", 'warning')
         }
     },
     eventClick( event ) {
       self.setState({operation: 'edit'})
       self.setState({eveId: event._id})
       let nouveau = {};
-    self.props.evenements.forEach(function (evenement) {
+      self.props.evenements.forEach(function (evenement) {
         if (evenement._id==event._id) {
+          var nbTotalPlaces = evenement.nbTotalPlaces ? evenement.nbTotalPlaces:8;
       nouveau = {
+      _id: evenement._id,
       titre: evenement.titre,
       par: evenement.type,
       lieu: evenement.lieu,
-      places: 10,
-      jours: 1,
+      nbTotalPlaces: nbTotalPlaces,
+      jours: evenement.nbJours,
+      allDay: evenement.allDay,
       start: evenement.start,
       end: evenement.end,
       description: evenement.description,
-      creneaux: evenement.creneaux
+      creneaux: evenement.creneaux,
+      inscription: evenement.inscription,
+      lienImage: evenement.lienImage
     };
         }
         })
@@ -136,7 +156,7 @@ const Calendar = React.createClass({
     },
     eventDrop( event, delta, revert ) {
       let evenementId = event._id;
-      let start = event.start.toDate()
+      let start = event.start.toDate();
       let end = event.end ? event.end.toDate(): event.start.toDate() ;
       if ( !isPast( start ) ) {
        let update = {start, end};
@@ -157,29 +177,32 @@ const Calendar = React.createClass({
     
     
     });
-    this.setState({render:true});
+
+  },
+  nouveauRendu() {
+
   },
   render() {
-      if (this.state.render) {
-          const { calendar } = this.refs;
+        const { calendar } = this.refs;
          $(calendar).fullCalendar('removeEvents');
+        $(calendar).fullCalendar( 'removeEventSources' );
          $(calendar).fullCalendar('addEventSource', this.props.evenements);         
          $(calendar).fullCalendar('rerenderEvents' );
-      }
       
     return(
         <div>
       <div ref="calendar"></div>
-      
-      <Modal show={this.state.showModal} onHide={this.close}>
-          <Modal.Header closeButton>
-            <Modal.Title>{this.state.operation=='edit'?'Modifier l\'événement':'Créer un nouvel événement'}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <FormulaireEvenement evenement={this.state.NEWEVE} fermer={this.close} operation={this.state.operation} eveId = {this.state.eveId}/>
-          </Modal.Body>
-        </Modal>
-      
+        <Dialog
+          title={this.state.operation=='edit'?'Modifier l\'événement':'Créer un nouvel événement'}
+          modal={false}
+          open={this.state.showModal}
+          onRequestClose={this.close}
+          titleStyle={styles.titre}
+          autoScrollBodyContent={true}
+        >
+  <FormulaireEvenement evenement={this.state.NEWEVE} fermer={this.close} operation={this.state.operation} eveId = {this.state.eveId}/>
+  </Dialog>
+
       </div>
       );
       

@@ -1,7 +1,4 @@
-import faker from 'faker';
-import { Mongo } from 'meteor/mongo';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
-import { Factory } from 'meteor/dburles:factory';
 
 export const Evenements = new Meteor.Collection( 'evenements' );
 
@@ -26,10 +23,14 @@ Evenements.schema = new SimpleSchema({
     type: Number,
     label: "le nombre de jours de l'activité si en jours entiers"
   },
+  "nbTotalPlaces": {
+    type: Number,
+    label: "Le nombre de places total disponibles"
+  },
   "type": {
     type: String,
     label: "Quelle structure propose l'activité ?",
-    allowedValues: ['La-Bonne-Fabrique', 'Le-Coworking', 'La-micro-brasserie','La-Salle-des-Machines','Autres']
+    allowedValues: ['La-Bonne-Fabrique', 'Le-Coworking', 'La-brasserie','La-Salle-des-Machines','Autres']
     },
   "places": {
     type: Number,
@@ -46,7 +47,12 @@ Evenements.schema = new SimpleSchema({
   },
   "creneaux": {
     type: [Object],
-    label: "Horaire, nombre de places et d'inscrits"
+    label: "Horaire, nombre de places et d'inscrits",
+    optional: true
+  },
+  "creneaux.$._id": {
+    type: String,
+    label: 'id du creneaux'
   },
   "creneaux.$.horaire": {
     type: String,
@@ -55,11 +61,21 @@ Evenements.schema = new SimpleSchema({
   "creneaux.$.places": {
     type: Number,
     label: "Le nombre de places dans le créneau"
-  }
-  ,
+  },
   "creneaux.$.inscrits": {
-    type: Number,
-    label: "Le nombre d'inscrits dans le créneau (calculé)"
+    type: [String],
+    label: "La table des inscrits",
+    optional: true
+  },
+  "inscription": {
+    type:Boolean,
+    label: "Inscriptions nécessaires ?",
+    optional: true
+  },
+  "lienImage": {
+    type:String,
+    label:"Lien de l'image pour l'accueil",
+    optional: true
   }
 });
 

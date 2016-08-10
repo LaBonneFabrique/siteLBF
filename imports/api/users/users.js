@@ -18,6 +18,28 @@ Users.UserProfile = new SimpleSchema({
     }
 });
 
+Users.Famille = new SimpleSchema({
+    _id: {
+        type: String
+    },
+    prenom: {
+        type: String,
+        optional: true
+    },
+    nom: {
+        type: String,
+        optional: true
+    },
+    age: {
+      type: Date,
+      optional: true
+    },
+    inscriptions: {
+        type: [String],
+        optional: true
+    }
+}); 
+
 Users.User = new SimpleSchema({
     username: {
         type: String,
@@ -43,12 +65,6 @@ Users.User = new SimpleSchema({
     "emails.$.verified": {
         type: Boolean
     },
-    // Use this registered_emails field if you are using splendido:meteor-accounts-emails-field / splendido:meteor-accounts-meld
-    registered_emails: {
-        type: [Object],
-        optional: true,
-        blackbox: true
-    },
     createdAt: {
         type: Date
     },
@@ -63,13 +79,25 @@ Users.User = new SimpleSchema({
         blackbox: true
     },
     roles: {
-        type: String,
+        type: [String],
         optional: true,
         blackbox: true
     },
-    // In order to avoid an 'Exception in setInterval callback' from Meteor
     reglageService: {
         type: Boolean,
+        optional: true
+    },
+    //La table des id des activités passées et à venir auxquelles l'utilisateur s'est inscrit
+    inscriptions: {
+        type: [String],
+        optional: true
+    },
+    adhesionFamille: {
+        type: Boolean,
+        optional: true
+    },
+    famille: {
+        type:[Users.Famille],
         optional: true
     }
 });

@@ -1,0 +1,323 @@
+{
+    "ace": {
+        "search": {
+            "@backwards": "false",
+            "@highlightmatches": "true",
+            "@matchcase": "false",
+            "@preservecase": "false",
+            "@regex": "false",
+            "@wholeword": "false",
+            "@wraparound": "true"
+        }
+    },
+    "breakpoints": {
+        "json()": []
+    },
+    "console": {
+        "@expanded": true,
+        "@height": 479,
+        "@maximized": "false",
+        "json()": {
+            "meta": {
+                "accessList": [
+                    "tab0",
+                    "tab11"
+                ]
+            },
+            "name": "pane1",
+            "nodes": [
+                {
+                    "type": "tab",
+                    "name": "tab11",
+                    "path": "",
+                    "className": [
+                        "tab11"
+                    ],
+                    "document": {
+                        "changed": false,
+                        "meta": {
+                            "timestamp": 1470647546971
+                        },
+                        "filter": true,
+                        "title": "node - \"vps281162.ovh.net\"",
+                        "tooltip": "node - \"vps281162.ovh.net\"",
+                        "terminal": {
+                            "id": "devel_308",
+                            "cwd": "",
+                            "width": 1523,
+                            "height": 453
+                        }
+                    },
+                    "editorType": "terminal",
+                    "active": false
+                },
+                {
+                    "type": "tab",
+                    "name": "tab0",
+                    "path": "",
+                    "className": [
+                        "tab0",
+                        "focus"
+                    ],
+                    "document": {
+                        "changed": false,
+                        "meta": {
+                            "timestamp": 1470835757047
+                        },
+                        "filter": true,
+                        "title": "bash - \"lbf@vps281162: /mnt/vdb/web/site-LBF/.deploy\"",
+                        "tooltip": "bash - \"lbf@vps281162: /mnt/vdb/web/site-LBF/.deploy\"",
+                        "terminal": {
+                            "id": "devel_741",
+                            "cwd": "",
+                            "width": 1523,
+                            "height": 453
+                        }
+                    },
+                    "editorType": "terminal",
+                    "active": true
+                }
+            ],
+            "skin": "editor_tab",
+            "skinset": "default",
+            "type": "pane"
+        }
+    },
+    "experiments": {
+        "@@enabled": true,
+        "@autosave": 0,
+        "@flat-dark": 0,
+        "@git": 1,
+        "@go_completion": 0,
+        "@mount": 0,
+        "@plugin-manager": 1,
+        "@plugins": 0,
+        "@sdk": 0,
+        "@test": 0
+    },
+    "ext": {
+        "counters": {
+            "@ace": 1,
+            "@acestatus": 1,
+            "@datagrid": 1,
+            "@divider": 7,
+            "@document": 11,
+            "@form": 5,
+            "@immediate": 1,
+            "@menu": 7,
+            "@menuitem": 27,
+            "@pane": 1,
+            "@postmessage": 7,
+            "@preferences": 1,
+            "@preview": 1,
+            "@session": 11,
+            "@tab": 5,
+            "@undoManager": 11
+        }
+    },
+    "findinfiles": {
+        "@console": "true",
+        "@matchcase": "false",
+        "@regex": "false",
+        "@wholeword": "false"
+    },
+    "menus": {
+        "@minimized": "false"
+    },
+    "nak": {
+        "@installed": true
+    },
+    "panecycle": {
+        "json()": [
+            "tab0",
+            "tab2"
+        ]
+    },
+    "panels": {
+        "@active-left": "tree",
+        "@width-left": 325,
+        "commands.panel": {
+            "@enabled": "true",
+            "@name": "commands.panel"
+        },
+        "debugger": {
+            "@enabled": "true",
+            "@name": "debugger"
+        },
+        "navigate": {
+            "@enabled": "true",
+            "@name": "navigate"
+        },
+        "outline": {
+            "@enabled": "true",
+            "@name": "outline"
+        },
+        "scm": {
+            "@enabled": "true",
+            "@name": "scm"
+        },
+        "tree": {
+            "@enabled": "true",
+            "@name": "tree"
+        }
+    },
+    "projecttree": {
+        "@scrollpos": -10,
+        "@showfs": true,
+        "expanded": {
+            "json()": [
+                "/",
+                "/.meteor/local",
+                "/.meteor/local/build/programs",
+                "/.meteor/local/build/programs/server",
+                "/.meteor/local/build/programs/server/assets",
+                "/.meteor/local/build/programs/server/assets/uploads",
+                "/imports/ui/themeLBF",
+                "/client",
+                "/imports/ui",
+                "/imports/api",
+                "/imports/modules",
+                "/imports/ui/components",
+                "/.meteor/local/build",
+                "/.meteor/local/build/programs/web.browser",
+                "/.meteor/local/build/programs/web.browser/assets",
+                "/imports/api/images",
+                "/.meteor/local/build/programs/server/assets/uploads/Images",
+                "/imports/api/evenements",
+                "/.deploy"
+            ]
+        }
+    },
+    "recentfiles": {
+        "json()": []
+    },
+    "search-history": {
+        "search": {
+            "json()": [
+                "nbPlacesTotal",
+                "horaire:",
+                "push",
+                "inli",
+                "dropzone",
+                "update",
+                "Fontawesome",
+                "fermer",
+                "evenement.date"
+            ]
+        },
+        "searchfiles": {
+            "json()": [
+                "Random",
+                "Meteor.call",
+                "browserhistory",
+                "User"
+            ]
+        }
+    },
+    "tabs": {
+        "json()": {
+            "focus": "/.deploy/mup.js",
+            "meta": {
+                "accessList": [
+                    "tab2",
+                    "tab1",
+                    "tab4",
+                    "tab3"
+                ]
+            },
+            "name": "pane2",
+            "nodes": [
+                {
+                    "type": "tab",
+                    "name": "tab1",
+                    "path": "/.deploy/settings.json",
+                    "className": [
+                        "tab1"
+                    ],
+                    "document": {
+                        "changed": false,
+                        "meta": {
+                            "timestamp": 1470835967312
+                        },
+                        "filter": true,
+                        "title": "settings.json",
+                        "tooltip": "/.deploy/settings.json",
+                        "ace": {}
+                    },
+                    "editorType": "ace",
+                    "active": false
+                },
+                {
+                    "type": "tab",
+                    "name": "tab2",
+                    "path": "/.deploy/mup.js",
+                    "className": [
+                        "tab2",
+                        "changed",
+                        "focus"
+                    ],
+                    "document": {
+                        "changed": true,
+                        "meta": {
+                            "timestamp": 1470835832616
+                        },
+                        "filter": true,
+                        "title": "mup.js",
+                        "tooltip": "/.deploy/mup.js",
+                        "ace": {}
+                    },
+                    "editorType": "ace",
+                    "active": true
+                },
+                {
+                    "type": "tab",
+                    "name": "tab3",
+                    "path": "/package.json",
+                    "className": [
+                        "tab3"
+                    ],
+                    "document": {
+                        "changed": false,
+                        "meta": {
+                            "timestamp": 1470569930358
+                        },
+                        "filter": true,
+                        "title": "package.json",
+                        "tooltip": "/package.json",
+                        "ace": {}
+                    },
+                    "editorType": "ace",
+                    "active": false
+                },
+                {
+                    "type": "tab",
+                    "name": "tab4",
+                    "path": "/settings-development.json",
+                    "className": [
+                        "tab4"
+                    ],
+                    "document": {
+                        "changed": false,
+                        "meta": {
+                            "timestamp": 1466087678601
+                        },
+                        "filter": true,
+                        "title": "settings-development.json",
+                        "tooltip": "/settings-development.json",
+                        "ace": {}
+                    },
+                    "editorType": "ace",
+                    "active": false
+                }
+            ],
+            "skin": "editor_tab",
+            "skinset": "default",
+            "type": "pane"
+        }
+    },
+    "tree_selection": {
+        "json()": [
+            "/settings-development.json"
+        ]
+    }
+}

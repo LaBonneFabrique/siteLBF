@@ -2,7 +2,6 @@ import $ from 'jquery';
 import 'jquery-validation';
 import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
-import { getInputValue } from './get-input-value';
 import {updateProfile} from '../api/users/methods.js';
 import { browserHistory } from 'react-router';
 
@@ -14,14 +13,19 @@ $.validator.addMethod( 'mailExists', ( emailAddress ) => {
   if (type=="inscription") {return userExists ? false : true;} else {return true;}
 });
 
+const mailExists = (emailAddress) => {
+  const userExists = Meteor.users.findOne({ 'emails.address': emailAddress });
+  return userExists ? userExists : false;
+};
+
 const handleSubmit = () => {
-  const email = getInputValue(component.refs.emailAddress);
+  const email = component.refs.emailAddress.getValue();
   let update={};
 
   //préparation de la mise à jour du profil en cas de nouvelle inscription
   if (type=='inscription') {
-  const prenom = getInputValue(component.refs.prenom);
-  const nom = getInputValue(component.refs.nom);
+  const prenom = component.refs.prenom.getValue();
+  const nom = component.refs.nom.getValue();
   update = {profile: {
           nom: nom,
           prenom: prenom
@@ -29,15 +33,17 @@ const handleSubmit = () => {
         emails:[{
           address: email,
           verified: false
-        }]
-          
+        }],
+        adhesionFamille: true,
+        famille:[],
+        reglageService: false,
+        roles:[]
         };
   } 
   
-  
-  if ($("[name='choix']").is(":checked")) {
-
-        const password = getInputValue(component.refs.password);
+if ($("[name='choix']").is(":checked")) {
+// pas d'utilisation des services extérieurs
+        const password = component.refs.password.getValue();
         if (type=='inscription') {
            Accounts.createUser({
         email: email,
@@ -46,6 +52,21 @@ const handleSubmit = () => {
       }, function (error) {
         if (error) {
           Bert.alert(error.reason, 'danger');
+        } else {
+          Bert.alert('Merci pour votre inscription.', 'success');
+          
+        if (Object.keys(update).length!=0) {
+          let usereId = Meteor.userId();
+          updateProfile.call({usereId, update}, (error) => {
+            if (error) {
+              Bert.alert(error.reason, 'danger');
+              }
+          });
+        }
+          
+          if (!Meteor.user().reglageService) {
+            browserHistory.push('/pageAdherent');
+            }
         }
       });
         } else {
@@ -55,17 +76,18 @@ const handleSubmit = () => {
 
     } else {
       Bert.alert( 'Vous êtes maintenant identifié.', 'success' );
-
+        if (!Meteor.user().reglageService) {
+            browserHistory.push('/pageAdherent');
+            }
     }
     });
         }
   } else {
+//utilisation d'un service extérieur
    let options = {
             requestPermissions: [ 'email' ]
           };
-    let dataSocialLogin = $("[name='service']:checked").val();
-    
-    
+  let dataSocialLogin = $("[name='service']:checked").val();
       Meteor[ dataSocialLogin ]( options, ( error ) => {
       if ( error ) {
         Bert.alert( error.message, 'danger' );
@@ -80,14 +102,17 @@ const handleSubmit = () => {
       }
     });
       }
+      
+      if (!Meteor.user().reglageService) {
+            browserHistory.push('/pageAdherent');
+            }
+      
       }
         
       });
     
   }
-if (!Meteor.user().reglageService) {
-  browserHistory.push('/pageAdherent');
-}
+
 };
 
 const validate = () => {

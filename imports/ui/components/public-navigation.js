@@ -1,16 +1,33 @@
 import React from 'react';
-import { Modal } from 'react-bootstrap';
-import { Nav, NavItem } from 'react-bootstrap';
-import {LoginModal} from './loginModal';
 import {Inscription} from './inscriptionModal';
-import {Identification} from './identificationModal';
+import Connexion from '../containers/connexion';
+//bascule materialize-ui
+import FlatButton from 'material-ui/FlatButton';
+import Dialog from 'material-ui/Dialog';
+//import couleur LBF
+var couleurs = require('../themeLBF/couleurs');
+
+var FontAwesome = require('react-fontawesome');
+
+const styles= {
+  titre: {
+    padding: 5,
+    margin: 0,
+
+  },
+  bouton: {
+        marginTop: '5px',
+    marginRight: 5,
+    color: 'white'
+  }
+}
 
 export const PublicNavigation = React.createClass({
       getInitialState() {
     return {
       showModalInscription: false,
       showModalIdentification: false
-    }
+    };
       },
 toggleModal: function (quelModal) {
   switch(quelModal) {
@@ -34,22 +51,44 @@ render:function () {
   
   return (
     <div>
-  <Nav pullRight>
-    <NavItem eventKey={ 1 } onClick={() => this.toggleModal('inscription')}>S'inscrire</NavItem>
-    <NavItem eventKey={ 2 } onClick={() => this.toggleModal('identification')}>S'identifier</NavItem>
-  </Nav>
-  <Modal show={this.state.showModalIdentification} onHide={this.close}>
-          <Modal.Header closeButton>
-            <Modal.Title>Connexion</Modal.Title>
-          </Modal.Header>
- <Inscription fermer={this.close} type="connexion"/>
-  </Modal>
-    <Modal show={this.state.showModalInscription} onHide={this.close}>
-          <Modal.Header closeButton>
-            <Modal.Title>S'inscrire</Modal.Title>
-          </Modal.Header>
+    <FlatButton
+        onClick={() => this.toggleModal('inscription')} 
+        label="S'inscrire"
+        icon={<FontAwesome name="user-plus" size="2x"/>}
+        backgroundColor={couleurs.jardin}
+        hoverColor={couleurs.grisLBF}
+        style={styles.bouton}
+        />
+
+    <FlatButton 
+      onClick={() => this.toggleModal('identification')} 
+      label="S'identifier"
+      icon={<FontAwesome name="sign-in" size="2x"/>}
+      backgroundColor={couleurs.brasserie}
+      hoverColor={couleurs.grisLBF}
+      style={styles.bouton}
+      />
+
+  <Dialog
+          title="Connexion"
+          modal={false}
+          open={this.state.showModalIdentification}
+          onRequestClose={this.close}
+          titleStyle={styles.titre}
+        >
+ <Connexion fermer={this.close}/>
+  </Dialog>
+    
+    
+      <Dialog
+          title="Inscription"
+          modal={false}
+          open={this.state.showModalInscription}
+          onRequestClose={this.close}
+          titleStyle={styles.titre}
+        >
   <Inscription fermer={this.close} type="inscription"/>
-  </Modal>
+  </Dialog>
 </div>
   )
 }

@@ -35,3 +35,30 @@ export const updateEvenement = new ValidatedMethod({
     Evenements.update(evenementId, { $set: update });
   },
 });
+
+export const updateInscrits = new ValidatedMethod({
+  name: 'evenements.updateInscrits',
+  validate: new SimpleSchema({
+        evenementId: {
+            type: String
+        },
+        "update.creneaux": {
+            type: [Object]
+        },
+        "update.creneaux.$._id": {
+          type:String
+        },
+        "update.creneaux.$.horaire": {
+          type: String
+        },
+        "update.creneaux.$.places": {
+          type: Number
+        },
+        "update.creneaux.$.inscrits": {
+          type: [String]
+        }
+    }).validator(),
+  run({ evenementId, update }) {
+    Evenements.update(evenementId, { $set: update });
+  },
+});
