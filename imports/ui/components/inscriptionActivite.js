@@ -31,6 +31,7 @@ export class InscriptionActivite extends React.Component {
     }
     
     componentDidMount() {
+        console.log(this.props)
         const self = this;
         var listeId=this.state.membresAInscrire;
         Meteor.user().famille.map(function(membre) {

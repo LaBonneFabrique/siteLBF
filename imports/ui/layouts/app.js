@@ -11,6 +11,7 @@ export const App = React.createClass({
     children: React.PropTypes.element.isRequired,
   },
   render() {
+    Session.set("Mongol_settings_display", true);
     return  <MuiThemeProvider>
     
     <div className="wrapper">

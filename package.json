@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Application description.",
   "scripts": {
-    "start": "meteor --settings settings-development.json --port http://localhost:8000/",
+    "start": "ROOT_URL='https://91.134.132.54:8080/' meteor --settings settings-development.json --port http://localhost:3000/",
     "test": "meteor test --driver-package practicalmeteor:mocha --port 5000",
     "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
     "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests",

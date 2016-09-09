@@ -54,6 +54,9 @@ inline: {
     width: 24,
     height: 24,
     padding: 2,
+  },
+  img: {
+    margin: 2
   }
 };
 
@@ -67,13 +70,18 @@ export class ListeImagesEvenement extends React.Component {
     }
     
 componentDidMount() {
-  console.log(this.props.choixImg)
   this.setState({choixImage:this.props.choixImg});
 }
 
 choisirImage(id) {
   this.setState({choixImage: id});
   this.props.retourChoix(id);
+}
+
+choixIcon(imageId) {
+  const iconChoix = imageId===this.state.choixImage ? "fa fa-check-square-o" : "fa fa-square-o";
+  console.log(iconChoix)
+  return iconChoix;
 }
     
 supprimerImage(id) {
@@ -90,33 +98,27 @@ supprimeImage.call({id}, (error) => {
         const  self = this;
         const listeImg = this.props.images.map(function(image) {
         const iconChoix = image._id===self.state.choixImage ? "fa fa-check-square-o" : "fa fa-square-o";
-        return (<div><GridTile
-                  key={image._id}
-                >
+        return (<GridTile style={styles.img}>
                 <img 
                   src={Images.link(image, 'taille120')} 
                   width="120"
                   onClick={() => {self.choisirImage(image._id)}}
                   />
-                <Row is="around nospace">
-                    <Cell is="3">
-                            <IconButton 
+                      <IconButton 
                             iconStyle={styles.smallIcon}
                             style={styles.small}
                             onClick={() => {self.choisirImage(image._id)}}
                             >
                             <FontIcon className={iconChoix}/>
                         </IconButton>
-                    </Cell>
-                    <Cell is="3">
+
                     <IconButton 
                     iconStyle={styles.smallIcon}
                     style={styles.small}
                     >
                     <FontIcon className="fa fa-crop"/>
                 </IconButton>
-                    </Cell>
-                    <Cell is="3">
+
                     <IconButton 
                       iconStyle={styles.smallIcon}
                       style={styles.small}
@@ -124,22 +126,13 @@ supprimeImage.call({id}, (error) => {
                       >
                     <FontIcon className="fa fa-remove"/>
                 </IconButton>
-                    </Cell>
-                </Row>
-                
-                
-                
-                
-
-                </GridTile>
-                
-                </div>
+                 </GridTile >
         );
     });
 
           return(
-            <div style={styles.root}>
-                <GridList
+            <div>
+              <GridList
                   cellHeight={160}
                   style={styles.gridList}
                   cols={3}

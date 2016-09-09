@@ -33,6 +33,7 @@ export class FormulairesInscription extends React.Component {
     
     componentDidMount() {
         evenement = getEveData(this.props.eveId);
+        console.log(evenement);
         var nbInscriptions=0;
         this.props.liste.map(function(id) {
         evenement.creneaux.map(function(creneau){

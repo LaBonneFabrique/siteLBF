@@ -71,14 +71,14 @@ var LesCartes = React.createClass({
                 afficheImage=Images.link(image, 'taille190');
                 }
             });
-        const laDate = moment(this.props.carte.start).format("D MMM");
+        const laDate = moment(self.props.carte.start).format("D MMM");
         return (
             <div className="carte">
                 <img src={afficheImage} />
                 <div className="data">
                     <div className="corps">
                     <h1>{laDate}</h1>
-                    <h3>{this.props.carte.titre}</h3>
+                    <h3>{self.props.carte.titre}</h3>
                         <div>{this.props.carte.description}</div>
                         
                     </div>
@@ -136,7 +136,7 @@ componentDidMount() {
 modalInscription(eveId, journee) {
     this.setState({showModalInscription: true});
     this.setState({eveId: eveId});
-    this.setState({eveId: journee});
+    this.setState({journee: journee});
     
 }
 

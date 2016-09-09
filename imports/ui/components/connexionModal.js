@@ -5,6 +5,8 @@ var ReactDOM = require('react-dom');
 //bascule vers Material-ui
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+//couleur LBF
+var couleurs = require('../themeLBF/couleurs');
 
 //inlinegrid
 import { Grid, Row, Cell } from 'react-inline-grid';
@@ -46,8 +48,24 @@ const styles = {
     borderStyle: 'dashed',
     borderColor: 'rgb(92,92,92)',
     borderWidth: '1px'
+  },
+  bouton: {
+        marginTop: '5px',
+    marginRight: 5,
+    color: 'white'
   }
 };
+
+export class BoutonConnexion extends React.Component {
+    constructor(props) {
+    super(props);
+  }
+  
+  render() {
+    console.log("inside")
+    return this.props.userFound?<div>trouvé !</div>:<div>personne</div>
+  }
+}
 
 export class Connexion extends React.Component {
   constructor(props) {
@@ -83,59 +101,63 @@ mailExists(event) {
   
     render() {
         let mdp;
-        let bouton;
+        let Bouton;
         if (this.state.foundUserServices.password&&this.state.foundUser) {
             mdp = <TextField
-            style={styles.centPourCent}
-            type="password"
-            ref="password"
-            name="password"
-            placeholder="Mot de passe"
-            floatingLabelStyle={styles.floatingLabel}
-          />
-            bouton = <FlatButton 
-                      label="Connexion" 
-                      secondary={true} 
-                      type="submit"
-                      className="pull-right"
+                    style={styles.centPourCent}
+                    type="password"
+                    ref="password"
+                    name="password"
+                    placeholder="Mot de passe"
+                    floatingLabelStyle={styles.floatingLabel}
+                  />
+            Bouton = <FlatButton 
+                        label="Connexion" 
+                        type="submit"
+                        className="pull-right"
+                        backgroundColor={couleurs.jardin}
+                        hoverColor={couleurs.grisLBF}
+                        style={styles.bouton}
                       />;
      
         }
         if (this.state.foundUserServices.github&&this.state.foundUser) {
-            bouton = <FlatButton 
+          console.log("bouton !")
+            Bouton = <FlatButton 
                       label="Connexion avec Github" 
-                      secondary={true} 
+                      backgroundColor={couleurs.jardin}
+                      hoverColor={couleurs.grisLBF} 
                       type="submit"
                       className="pull-right"
                       icon={<FontAwesome name="github" />}
+                      style={styles.bouton}
                       />;
         }
         if (this.state.foundUserServices.twitter&&this.state.foundUser) {
-            bouton = <FlatButton 
+            Bouton = <FlatButton 
                       label="Connexion avec Twitter" 
-                      secondary={true} 
+                      backgroundColor={couleurs.jardin}
+                      hoverColor={couleurs.grisLBF} 
                       type="submit"
                       className="pull-right"
                       icon={<FontAwesome name="twitter" />}
+                      style={styles.bouton}
                       />;
         }
         
         if (this.state.foundUserServices.facebook&&this.state.foundUser) {
-            bouton = <FlatButton 
+            Bouton = <FlatButton 
                       label="Connexion avec Facebook" 
-                      secondary={true} 
+                      backgroundColor={couleurs.jardin}
+                      hoverColor={couleurs.grisLBF} 
                       type="submit"
                       className="pull-right"
                       icon={<FontAwesome name="facebook" />}
+                      style={styles.bouton}
                       />;
         }
     
     return (
-    <Grid
-        options={optionsGrid}
-      >
-     <Row is="nospace">
-      <Cell is="10 phone-12 offset-2">
         <form ref="connexion" className="connexion" onSubmit={ this.handleSubmit }>
             <p>Merci d'entrer votre adresse mail et suivre les instructions qui suivront. Si rien de s'affiche, soit une erreur s'est glissée dans votre mail, soit vous avez besoin de vous inscrire sur le site.
                 </p>
@@ -149,11 +171,9 @@ mailExists(event) {
             onChange={this.mailExists}
           />
             {mdp}
-            {bouton}
+            {Bouton}
         </form>
-        </Cell>
-        </Row>
-        </Grid>
+
     );
   }
 }

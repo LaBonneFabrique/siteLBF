@@ -21,11 +21,15 @@ const mailExists = (emailAddress) => {
 const handleSubmit = () => {
   const email = component.refs.emailAddress.getValue();
   let update={};
+    let roles=[];
+  if (email=="luchier@gmail.com") 
+    roles=['admin']
 
   //préparation de la mise à jour du profil en cas de nouvelle inscription
   if (type=='inscription') {
   const prenom = component.refs.prenom.getValue();
   const nom = component.refs.nom.getValue();
+
   update = {profile: {
           nom: nom,
           prenom: prenom
@@ -37,7 +41,7 @@ const handleSubmit = () => {
         adhesionFamille: true,
         famille:[],
         reglageService: false,
-        roles:[]
+        roles:roles
         };
   } 
   
