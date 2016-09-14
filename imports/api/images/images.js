@@ -21,7 +21,7 @@ var fs = require ('fs-plus');
   };
 
 export const Images = new FilesCollection({
-  storagePath: './assets/uploads/Images',
+  storagePath: '/data/assets/images',
   collectionName: 'Images',
   allowClientCode: false, // Disallow remove files from Client
   onBeforeUpload: function (file) {

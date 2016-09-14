@@ -4,4 +4,4 @@ import './fixtures';
 import './api';
 import './configureServices';
 import './onCreateUser';
-
+import './envoiMail';

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Application description.",
   "scripts": {
-    "start": "ROOT_URL='https://91.134.132.54:8080/' meteor --settings settings-development.json --port http://localhost:3000/",
+    "start": "MAIL_URL='smtp://postmaster%40dev.labonnefabrique.fr:2b854ff84b0f8692657d93d24f51844e@smtp.mailgun.org:587' ROOT_URL='https://dev.labonnefabrique.fr:8080/' NODE_OPTIONS='--debug' meteor --settings settings-development.json --port http://localhost:3000/",
     "test": "meteor test --driver-package practicalmeteor:mocha --port 5000",
     "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
     "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests",

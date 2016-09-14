@@ -5,7 +5,7 @@ import {updateInscrits} from '../api/evenements/methods';
 import { Bert } from 'meteor/themeteorchef:bert';
 
 export const RemoveInscriptions = function(evenementId, membreId) {
-    console.log('remove !')
+
     //mise à jour de l'utilisateur
     const famille = Meteor.user().famille;
     var prenom = "";

@@ -1,7 +1,5 @@
 import React from 'react';
 import { browserHistory, Link } from 'react-router';
-//import { IndexLinkContainer, LinkContainer } from 'react-router-bootstrap';
-//import { Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { Meteor } from 'meteor/meteor';
 //bascule materialize-ui
 import FlatButton from 'material-ui/FlatButton';
@@ -23,28 +21,10 @@ const userName = () => {
   return user && nom!='' && prenom!=''? `${prenom} ${nom}`:'bib';//`${name.first} ${name.last}` : '';
 };
 
-const isAdmin = () => {
-  var retour = false;
-  const user = Meteor.user();
-  if (user.roles.find('admin')) retour=true;
-  return retour;
-};
-
-const isCollege = () => {
-  var retour = false;
-  const user = Meteor.user();
-  if (user.roles.find('college')) retour=true;
-  return retour;
-};
-
-const isLogged = () => {
-  var retour = false;
-  if (Meteor.user()) retour = true;
-  return retour;
-};
 
 
-  export  class AuthenticatedNavigation extends React.Component {
+
+export  class AuthenticatedNavigation extends React.Component {
 
   constructor(props) {
     super(props);
@@ -61,8 +41,22 @@ const isLogged = () => {
   handleLogout() {
     Meteor.logout(() => browserHistory.push('/'));
     } 
-  
+    
   render() {
+  const user = Meteor.user();
+  const isLocalAdmin = (role) => {
+      return role==="admin";
+    };
+
+  const isLocalCollege = (role) => {
+      return role==="college";
+    };
+    
+  const autorisationAdmin = user.roles.findIndex(isLocalAdmin)>=0?true:false;
+  const autorisationCollege = user.roles.findIndex(isLocalCollege)>=0?true:false;
+  
+  console.log(autorisationAdmin||autorisationCollege)
+    
     return(
     <Toolbar className="">
     <Grid>
@@ -89,6 +83,7 @@ const isLogged = () => {
                 <FontAwesome name='dashboard' size="2x" />
               }
               />
+            {autorisationAdmin||autorisationCollege?
             <MenuItem 
               containerElement={<Link to="/agenda" />}
               linkButton={true}
@@ -96,7 +91,8 @@ const isLogged = () => {
               leftIcon={
                 <FontAwesome name='calendar' size="2x" />
               }
-              />
+              />:null}
+              {autorisationAdmin||autorisationCollege?
             <MenuItem 
               containerElement={<Link to="/listeAdherents" />}
               linkButton={true}
@@ -104,7 +100,7 @@ const isLogged = () => {
               leftIcon={
                 <FontAwesome name='users' size="2x" />
               }
-              />
+              />:null}
             <MenuItem 
                 onClick={ this.handleLogout }
                 primaryText='Se déconnecter' 

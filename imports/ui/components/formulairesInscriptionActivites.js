@@ -4,6 +4,7 @@ import {getEveData, getCreneauData, getPlacesRestantes, getIndexCreneau} from ".
 import FontAwesome from 'react-fontawesome';
 import {updateFamille} from '../../api/users/methods';
 import {updateInscrits} from '../../api/evenements/methods';
+import {envoiEmailConfirmation} from '../../modules/envoiMail';
 import { Bert } from 'meteor/themeteorchef:bert';
 import $ from 'jquery';
 //bascule vers Material-ui
@@ -28,12 +29,12 @@ export class FormulairesInscription extends React.Component {
             nbChecked: 0
         };
         this.lesCreneaux = this.lesCreneaux.bind(this);
+        this.envoiEmail = this.envoiEmail.bind(this);
 
     }
     
     componentDidMount() {
         evenement = getEveData(this.props.eveId);
-        console.log(evenement);
         var nbInscriptions=0;
         this.props.liste.map(function(id) {
         evenement.creneaux.map(function(creneau){
@@ -70,13 +71,12 @@ export class FormulairesInscription extends React.Component {
     const m = getIndexCreneau(creneaux, creneauId);
     var nbInscriptions = this.state.nbChecked;
     if ($(checkboxName).is(':checked')) {
-        console.log('checked')
         famille[index].inscriptions.push(this.props.eveId);
         creneaux[m].inscrits.push(id);
         messageOK = famille[index].prenom + " est enregistré.e sur le créneau "+horaire;
         nbInscriptions++;
     } else {
-        console.log('unckecked')
+
         const n = famille[index].inscriptions.indexOf(this.props.eveId);
         famille[index].inscriptions.splice(n,1);
         const mm = creneaux[m].inscrits.indexOf(id);
@@ -87,10 +87,9 @@ export class FormulairesInscription extends React.Component {
     }
     
     update = {creneaux: creneaux};
-    console.log(update)
+
     const evenementId = this.props.eveId;
     updateInscrits.call({evenementId, update}, (error) => {
-        console.log('call check')
       if (error) {
         Bert.alert(error.reason, 'danger');
       }
@@ -171,6 +170,18 @@ export class FormulairesInscription extends React.Component {
 ;
     }
     
+    envoiEmail() {
+        const userId = Meteor.userId();
+        const eveId=this.props.eveId;
+      envoiEmailConfirmation.call({userId, eveId}, (error) => {
+      if (error) {
+        Bert.alert(error.reason, 'danger');
+      } else {
+          Bert.alert("Le mail contenant le détail de votre inscription a été envoyé.", 'success')
+      }
+    });  
+    }
+    
     render() {
         
         
@@ -196,6 +207,7 @@ export class FormulairesInscription extends React.Component {
                               backgroundColor={couleurs.coworking}
                               hoverColor={couleurs.grisLBF}
                               style={styles.bouton}
+                              onClick={() => this.envoiEmail()}
                               />
                     </div>;
         
@@ -204,7 +216,7 @@ export class FormulairesInscription extends React.Component {
                 <div>
                 {formulaires}
                 </div>
-                {this.state.nbChecked>0?validation:null}
+                {validation}
                 </div>
             );
     }

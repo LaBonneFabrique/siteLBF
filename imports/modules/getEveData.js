@@ -1,9 +1,7 @@
 import {Evenements} from '../api/evenements/evenements';
 
 export const getEveData = function(id) {
-    console.log(id)
     const evenement = Evenements.findOne({_id: id});
-    console.log(evenement)
     return evenement;
 };
 

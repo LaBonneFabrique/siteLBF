@@ -31,7 +31,6 @@ export class InscriptionActivite extends React.Component {
     }
     
     componentDidMount() {
-        console.log(this.props)
         const self = this;
         var listeId=this.state.membresAInscrire;
         Meteor.user().famille.map(function(membre) {
@@ -63,7 +62,6 @@ export class InscriptionActivite extends React.Component {
             const n = listeId.indexOf(membre._id);
             listeId.splice(n,1);
             const m = membre.inscriptions.indexOf(this.props.eveId);
-            console.log(m)
             if (m>-1) RemoveInscriptions(this.props.eveId, membre._id);
             listeChecked[membre._id] = false;
         }

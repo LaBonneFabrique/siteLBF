@@ -50,9 +50,12 @@ const styles = {
     borderWidth: '1px'
   },
   bouton: {
-        marginTop: '5px',
+    marginTop: '5px',
     marginRight: 5,
     color: 'white'
+  },
+  rightAlign: {
+    textAlign: 'right'
   }
 };
 
@@ -103,14 +106,17 @@ mailExists(event) {
         let mdp;
         let Bouton;
         if (this.state.foundUserServices.password&&this.state.foundUser) {
-            mdp = <TextField
-                    style={styles.centPourCent}
-                    type="password"
-                    ref="password"
-                    name="password"
-                    placeholder="Mot de passe"
-                    floatingLabelStyle={styles.floatingLabel}
-                  />
+            mdp = <div style={styles.rightAlign}>
+                    <TextField
+                      style={styles.centPourCent}
+                      type="password"
+                      ref="password"
+                      name="password"
+                      placeholder="Mot de passe"
+                      floatingLabelStyle={styles.floatingLabel}
+                    />
+                    <a href="./oubliMDP">Mot de passe oublié ?</a>
+                  </div>;
             Bouton = <FlatButton 
                         label="Connexion" 
                         type="submit"
@@ -119,10 +125,8 @@ mailExists(event) {
                         hoverColor={couleurs.grisLBF}
                         style={styles.bouton}
                       />;
-     
         }
         if (this.state.foundUserServices.github&&this.state.foundUser) {
-          console.log("bouton !")
             Bouton = <FlatButton 
                       label="Connexion avec Github" 
                       backgroundColor={couleurs.jardin}

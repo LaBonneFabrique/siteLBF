@@ -9,13 +9,13 @@ let component;
 let token;
 
 const handleReset = () => {
-  const password = getInputValue(component.refs.newPassword);
+  const password = component.refs.newPassword.getValue();
   Accounts.resetPassword(token, password, (error) => {
     if (error) {
       Bert.alert(error.reason, 'danger');
     } else {
       browserHistory.push('/');
-      Bert.alert('Password reset!', 'success');
+      Bert.alert('Succès du changement de mot de passe', 'success');
     }
   });
 };
@@ -35,12 +35,12 @@ const validate = () => {
     },
     messages: {
       newPassword: {
-        required: 'Enter a new password, please.',
-        minlength: 'Use at least six characters, please.',
+        required: 'Entrer un nouveau mot de passe',
+        minlength: 'Au moins 6 caractères, s\'il vous plaît',
       },
       repeatNewPassword: {
-        required: 'Repeat your new password, please.',
-        equalTo: 'Hmm, your passwords don\'t match. Try again?',
+        required: 'Entrer à nouveau votre mot de passe.',
+        equalTo: 'Les deux mots de passe ne correspondent pas, essayez à nouveau',
       },
     },
     submitHandler() { handleReset(); },
