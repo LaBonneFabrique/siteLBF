@@ -77,6 +77,7 @@ export class PageAdherent extends React.Component {
   }
   
   componentDidMount() {
+      document.title = "La Bonne Fabrique | Page adhérent";
       if(Meteor.user().famille.length<1&&Meteor.user().adhesionFamille) {
           const nom = Meteor.user().profile.nom;
           const prenom = Meteor.user().profile.prenom;

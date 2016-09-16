@@ -7,7 +7,11 @@ import FlatButton from 'material-ui/FlatButton';
 import Checkbox from 'material-ui/Checkbox';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 //inlinegrid
-import { Grid, Row, Cell } from 'react-inline-grid';
+//import { Grid, Row, Cell } from 'react-inline-grid';
+//muicss table
+import Container from 'muicss/lib/react/container';
+import Row from 'muicss/lib/react/row';
+import Col from 'muicss/lib/react/col';
 
 const optionsGrid = {
   columns: 12,
@@ -84,8 +88,8 @@ export class Inscription extends React.Component {
      </div>
         : 
         <div>
-        <Row is="nospace">
-          <Cell is="12">
+        <Row>
+          <Col xs="12">
         <TextField
             style={styles.centPourCent}
             type="password"
@@ -93,9 +97,9 @@ export class Inscription extends React.Component {
             name="password"
             placeholder="Mot de passe"
             floatingLabelStyle={styles.floatingLabel}
-          /></Cell></Row>
-          <Row is="nospace">
-          <Cell is="12">
+          /></Col></Row>
+          <Row>
+          <Col xs="12">
         <TextField
             style={styles.centPourCent}
             type="password"
@@ -103,18 +107,16 @@ export class Inscription extends React.Component {
               name="passwordVerif"
               placeholder="Vérification du mot de passe"
             floatingLabelStyle={styles.floatingLabel}
-          /></Cell></Row>
+          /></Col></Row>
          </div>;
 
     
     
     return (
-        <Grid
-            options={optionsGrid}
-          >
+        <Container >
         <form ref="inscription" className="inscription" onSubmit={ this.handleSubmit }>
-          <Row is="nospace">
-          <Cell is="6 phone-12">
+          <Row>
+          <Col md="6" xs="12">
           <TextField
                 style={styles.centPourCent}
                 type="text"
@@ -122,8 +124,8 @@ export class Inscription extends React.Component {
                 name="prenom"
                 placeholder="Prénom"
               />
-          </Cell>
-          <Cell is="6 phone-12">
+          </Col>
+          <Col md="6" xs="12">
              <TextField
                 style={styles.centPourCent}
                 type="text"
@@ -131,8 +133,8 @@ export class Inscription extends React.Component {
                 name="nom"
                 placeholder="Nom"
               />
-          </Cell></Row>
-        <Row is="nospace"><Cell is="12">
+          </Col></Row>
+        <Row><Col xs="12">
         <TextField
             style={styles.centPourCent}
             type="email"
@@ -140,8 +142,8 @@ export class Inscription extends React.Component {
             name="emailAddress"
             placeholder="Adresse Mail"
           />
-          </Cell></Row>
-          <Row is="nospace"><Cell is="12">
+          </Col></Row>
+          <Row><Col xs="12">
         <Checkbox
           label="Ne pas utiliser Facebook, Twitter ou Github"
           style={styles.centPourCent}
@@ -149,11 +151,11 @@ export class Inscription extends React.Component {
           ref="choix"
           name="choix"
         />
-        </Cell></Row>
+        </Col></Row>
 
           {renderTypeFormulaire}
 
-          <Row is="end"><Cell is="12">
+          <Row><Col xs="12">
         <FlatButton
           type="submit"
           label="S'inscrire"
@@ -161,9 +163,9 @@ export class Inscription extends React.Component {
           primary={true}
           style={styles.button}
                   />
-        </Cell></Row>
+        </Col></Row>
         </form>
-      </Grid>
+      </Container>
 
 
     );

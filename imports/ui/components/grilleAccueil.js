@@ -58,6 +58,8 @@ var styles = {
 
 var LesCartes = React.createClass({
     render() {
+        const isPair = Math.round(this.props.rang/2)%2==0?true:false;
+        console.log(isPair)
         var nbPlacesrestantes=0;
         this.props.carte.creneaux.map(function(creneau){
             nbPlacesrestantes += creneau.places-creneau.inscrits.length;
@@ -74,7 +76,7 @@ var LesCartes = React.createClass({
         const laDate = moment(self.props.carte.start).format("D MMM");
         return (
             <div className="carte">
-                <img src={afficheImage} />
+                {isPair?<img src={afficheImage} className="pair"/>:<img src={afficheImage} className="impair"/>}
                 <div className="data">
                     <div className="corps">
                     <h1>{laDate}</h1>
@@ -98,14 +100,6 @@ var LesCartes = React.createClass({
                             />
                             :null}
                             
-                            <FloatingActionButton 
-                            mini={true} 
-                            backgroundColor={couleur}
-                            style={styles.small}
-                            iconClassName="fa fa-comments"
-                            iconStyle={styles.smallIcon}
-                            zDepth={0}
-                            />
                     </div>
                 </div>
             </div>
@@ -131,6 +125,7 @@ constructor(props) {
   }
   
 componentDidMount() {
+
   }
   
 modalInscription(eveId, journee) {
@@ -155,7 +150,7 @@ render () {
             i++;
             return (
                 <GridTile key={key} style={styles.tile}>
-                    <LesCartes carte={card} rang={i-1} toggle={self.modalInscription}/>
+                    <LesCartes carte={card} rang={i} toggle={self.modalInscription}/>
                 </GridTile>
                     );
         });
@@ -185,4 +180,15 @@ render () {
         );
 }
 }
+
+/* icone des commentaires 
+                           <FloatingActionButton 
+                            mini={true} 
+                            backgroundColor={couleur}
+                            style={styles.small}
+                            iconClassName="fa fa-comments"
+                            iconStyle={styles.smallIcon}
+                            zDepth={0}
+                            />
+                            */
    

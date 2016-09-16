@@ -24,6 +24,12 @@ const handleSubmit = () => {
             requestPermissions: [ 'email' ]
           };
           
+          if ( type === 'loginWithTwitter' ) {
+            delete options.requestPermissions;
+          }
+    
+          console.log(type)
+          
         
         Meteor[ type ]( options, ( error ) => {
         if ( error ) {
@@ -67,7 +73,7 @@ export const handleConnexion = (options) => {
   component = options.component;
   service = options.service;
   if (service.github) type="loginWithGithub";
-  if (service.facebook) type="loginWithfacebook";
+  if (service.facebook) type="loginWithFacebook";
   if (service.twitter) type="loginWithTwitter";
   if (service.password) type="password";
   validate();

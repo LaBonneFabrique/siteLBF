@@ -76,6 +76,11 @@ Evenements.schema = new SimpleSchema({
     type:String,
     label:"Lien de l'image pour l'accueil",
     optional: true
+  },
+  "lienBilleterie": {
+    type: String,
+    regEx: SimpleSchema.RegEx.Url,
+    optional: true
   }
 });
 

@@ -8,7 +8,11 @@ import MenuItem from 'material-ui/MenuItem';
 import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
 import IconMenu from 'material-ui/IconMenu';
 //inlinegrid
-import { Grid, Row, Cell } from 'react-inline-grid';
+//import { Grid, Row, Cell } from 'react-inline-grid';
+//muicss table
+import Container from 'muicss/lib/react/container';
+import Row from 'muicss/lib/react/row';
+import Col from 'muicss/lib/react/col';
 
 var FontAwesome = require('react-fontawesome');
 
@@ -30,8 +34,40 @@ export  class AuthenticatedNavigation extends React.Component {
     super(props);
     this.state = {
       value: 3,
+      autorisation: false
     };
     this.handleChange = this.handleChange.bind(this);
+  }
+  
+  componentDidMount() {
+    const etatAutorisation = this.trouveAutorisations();
+    this.setState({autorisation: etatAutorisation});
+  }
+  
+  shouldComponentUpdate() {
+    const etatAutorisation = this.trouveAutorisations();
+    this.setState({autorisation: etatAutorisation});
+    return true;
+  }
+  
+  trouveAutorisations() {
+     const user = Meteor.user();
+  const isLocalAdmin = (role) => {
+      return role==="admin";
+    };
+
+  const isLocalCollege = (role) => {
+      return role==="college";
+    };
+  let autorisationAdmin = false;
+  let autorisationCollege = false;
+  
+  if (user&&user.roles) {
+  autorisationAdmin = user.roles.findIndex(isLocalAdmin)>-1?true:false;
+  autorisationCollege = user.roles.findIndex(isLocalCollege)>-1?true:false;
+  }
+    const autorisation = autorisationAdmin||autorisationCollege;
+    return autorisation;
   }
   
   handleChange(event, index, value) {
@@ -43,25 +79,36 @@ export  class AuthenticatedNavigation extends React.Component {
     } 
     
   render() {
-  const user = Meteor.user();
-  const isLocalAdmin = (role) => {
-      return role==="admin";
+    let agenda;
+    let listeAdherents;
+    
+    if (this.state.autorisation) {
+
+    
+  agenda = <MenuItem 
+              containerElement={<Link to="/agenda" />}
+              linkButton={true}
+              primaryText='Agenda' 
+              leftIcon={
+                <FontAwesome name='calendar' size="2x" />
+              }
+              />;
+    
+    listeAdherents =<MenuItem 
+              containerElement={<Link to="/listeAdherents" />}
+              linkButton={true}
+              primaryText='Liste des adhérents' 
+              leftIcon={
+                <FontAwesome name='users' size="2x" />
+              }
+              />
     };
 
-  const isLocalCollege = (role) => {
-      return role==="college";
-    };
-    
-  const autorisationAdmin = user.roles.findIndex(isLocalAdmin)>=0?true:false;
-  const autorisationCollege = user.roles.findIndex(isLocalCollege)>=0?true:false;
-  
-  console.log(autorisationAdmin||autorisationCollege)
-    
     return(
     <Toolbar className="">
-    <Grid>
-    <Row is="end">
-    <Cell is="2 offset-10">
+    <Container className="marginTop10">
+    <Row >
+    <Col xs="2" xs-offset="10">
           <IconMenu
             iconButtonElement={
               <FontAwesome name='gears' size="2x"/>
@@ -83,24 +130,8 @@ export  class AuthenticatedNavigation extends React.Component {
                 <FontAwesome name='dashboard' size="2x" />
               }
               />
-            {autorisationAdmin||autorisationCollege?
-            <MenuItem 
-              containerElement={<Link to="/agenda" />}
-              linkButton={true}
-              primaryText='Agenda' 
-              leftIcon={
-                <FontAwesome name='calendar' size="2x" />
-              }
-              />:null}
-              {autorisationAdmin||autorisationCollege?
-            <MenuItem 
-              containerElement={<Link to="/listeAdherents" />}
-              linkButton={true}
-              primaryText='Liste des adhérents' 
-              leftIcon={
-                <FontAwesome name='users' size="2x" />
-              }
-              />:null}
+            {agenda}
+            {listeAdherents}
             <MenuItem 
                 onClick={ this.handleLogout }
                 primaryText='Se déconnecter' 
@@ -109,8 +140,8 @@ export  class AuthenticatedNavigation extends React.Component {
                 }
                 />
           </IconMenu>
-          </Cell></Row>
-      </Grid>
+          </Col></Row>
+      </Container>
     </Toolbar>
 
       );

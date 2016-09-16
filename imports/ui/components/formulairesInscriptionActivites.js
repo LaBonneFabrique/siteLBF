@@ -199,7 +199,7 @@ export class FormulairesInscription extends React.Component {
         
         const validation = 
                     <div>
-                        <p>En cliquant sur le bouton ci-dessous, un mail de confirmation vous sera envoyé. 
+                        <p>En cliquant sur le bouton ci-dessous, un mail de confirmation vous sera envoyé. Il comporte des indications sur la participation aux frais.
                         Vous pouvez revenir à cette page à tout moment pour modifier ou annuler vos inscriptions. </p>
                             <FlatButton 
                               label="Envoyer la confirmation"

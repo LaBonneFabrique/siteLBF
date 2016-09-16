@@ -38,3 +38,5 @@ std:accounts-bootstrap
 cfs:graphicsmagick
 deanius:promise
 shell-server
+email
+meteorhacks:ssr

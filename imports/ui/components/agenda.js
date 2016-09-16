@@ -48,7 +48,8 @@ const Calendar = React.createClass({
                 inscrits: []}
                 ],
       inscription: false,
-      lienImage:""
+      lienImage:"",
+      lienBilleterie:""
     }
     };
   },
@@ -104,7 +105,8 @@ const Calendar = React.createClass({
                 inscrits: []}
                 ],
       inscription: false,
-      lienImage:""
+      lienImage:"",
+      lienBilleterie:""
     };
      self.setState({NEWEVE: nouveau});
      self.open();
@@ -132,7 +134,8 @@ const Calendar = React.createClass({
       description: evenement.description,
       creneaux: evenement.creneaux,
       inscription: evenement.inscription,
-      lienImage: evenement.lienImage
+      lienImage: evenement.lienImage,
+      lienBilleterie: evenement.lienBilleterie
     };
         }
         })

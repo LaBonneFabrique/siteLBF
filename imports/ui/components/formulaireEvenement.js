@@ -5,7 +5,7 @@ import {Random} from 'meteor/random';
 //import {FormGroup, ControlLabel, FormControl, Button, ButtonToolbar} from 'react-bootstrap';
 import { Bert } from 'meteor/themeteorchef:bert';
 import {insertEvenement, updateEvenement, removeEvenement} from '../../api/evenements/methods.js';
-import { getInputValue } from '../../modules/get-input-value';
+//import { getInputValue } from '../../modules/get-input-value';
 import CreateDropzone from '../containers/dropzone.js';
 import ListeImagesEvenement from '../containers/listeImagesEvenement';
 
@@ -17,7 +17,11 @@ import MenuItem from 'material-ui/MenuItem';
 import Checkbox from 'material-ui/Checkbox';
 import FontIcon from 'material-ui/FontIcon';
 //inlinegrid
-import { Grid, Row, Cell } from 'react-inline-grid';
+//import { Grid, Row, Cell } from 'react-inline-grid';
+//muicss table
+import Container from 'muicss/lib/react/container';
+import Row from 'muicss/lib/react/row';
+import Col from 'muicss/lib/react/col';
 //import couleur LBF
 var couleurs = require('../themeLBF/couleurs');
 
@@ -107,17 +111,17 @@ var ListeCreneaux = React.createClass(
     const refHoraire = 'horaire'+index;
     const refPlaces = 'places'+index;
     if(index>=1) {
-       var bouton = <Cell is="1 phone-12">
+       var bouton = <Col xs="1" md="1">
           <FlatButton onClick={() => self.handleClickMoins(index)}><FontAwesome name='minus' /></FlatButton>
-        </Cell>;
+        </Col>;
      } else {
-       var bouton = <Cell is="1 phone-12">
+       var bouton = <Col xs="12" md="1">
           <FlatButton onClick={() => self.handleClickPlus()}><FontAwesome name='plus' /></FlatButton>
-        </Cell>;
+        </Col>;
      }
       return (
-      <Row key={index} is="nospace">
-      <Cell is="3 phone-12">
+      <Row key={index}>
+      <Col xs="12" md="3">
           <TextField
             style={styles.centPourCent}
             type='text'
@@ -127,8 +131,8 @@ var ListeCreneaux = React.createClass(
             ref = {refHoraire}
             onBlur = {self.handleChangeCreneau}
             />
-      </Cell>
-        <Cell is="2 phone-12">
+      </Col>
+        <Col xs="12" md="2">
           <TextField
             style={styles.centPourCent}
             type='text' 
@@ -138,8 +142,8 @@ var ListeCreneaux = React.createClass(
             name={refPlaces}
             onChange = {self.handleChangeCreneau}
             />
-      </Cell>
-        <Cell is="2 phone-12">
+      </Col>
+        <Col xs="12" md="2">
           <TextField
             style={styles.centPourCent}
             type='text'
@@ -150,7 +154,7 @@ var ListeCreneaux = React.createClass(
             onChange = {self.changeCreneau}
             disabled
             />
-      </Cell>
+      </Col>
     
       {bouton}
       
@@ -206,9 +210,13 @@ onClic: function () {
 },
 
 handleAjoutEve: function(event) {
-  
+  let nbJours = 1;
   const titre = this.refs.titreEve.getValue();
-  const nbJours = Number(this.refs.nbJours.getValue());
+  if (this.state.journee) {
+    nbJours = Number(this.refs.nbJours.getValue());
+  }
+  const lienBilleterie = this.refs.lienBilleterie.getValue();
+
   const type = this.state.par;
   const lieu = this.refs.lieu.getValue();
   const description = this.refs.descriptionEve.getValue();
@@ -236,10 +244,14 @@ handleAjoutEve: function(event) {
       start = this.state.start.toDate();
       const duree = moment.duration({'days' : nbJours});
       end = allDay ? moment(this.state.start).add(duree).toDate() : start;
-
       
-      let evenement = {titre, start, end, allDay, nbJours, nbTotalPlaces, type, lieu, description, creneaux, inscription, lienImage,
-        };
+      let evenement;
+      if (lienBilleterie=="") {
+        evenement = {titre, start, end, allDay, nbJours, nbTotalPlaces, type, lieu, description, creneaux, inscription, lienImage,};
+        } else {
+          evenement = {titre, start, end, allDay, nbJours, nbTotalPlaces, type, lieu, description, creneaux, inscription, lienImage, lienBilleterie,};
+        }
+        
       insertEvenement.call(evenement, (error) => {
           if (error) {
             Bert.alert(error.reason, 'danger');
@@ -252,9 +264,14 @@ handleAjoutEve: function(event) {
     case 'edit':
       start = this.props.evenement.start;
       end = this.props.evenement.end;
-      console.log(nbTotalPlaces)
+
       let evenementId = this.props.eveId;
-        let update = {titre, start, end, allDay, nbJours, nbTotalPlaces, type, lieu, description, creneaux, inscription, lienImage, };
+        let update;
+        if (lienBilleterie=="") {
+          update = {titre, start, end, allDay, nbJours, nbTotalPlaces, type, lieu, description, creneaux, inscription, lienImage,};
+        } else {
+          update = {titre, start, end, allDay, nbJours, nbTotalPlaces, type, lieu, description, creneaux, inscription, lienImage, lienBilleterie,};
+        }
       updateEvenement.call({evenementId, update}, (error) => {
       if (error) {
         Bert.alert(error.reason, 'danger');
@@ -354,16 +371,16 @@ render: function() {
    if(!this.state.journee) {
      affichageCreneaux =     
       <div>
-      <Row is="nospace" className="spaceTop10">
-      <Cell is="3 phone-12">
+      <Row className="spaceTop10">
+      <Col xs="2" md="3">
         <b>Créneau</b>
-      </Cell>
-      <Cell is="2 phone-2">
+      </Col>
+      <Col md="2">
         <b>Places</b>
-      </Cell>
-      <Cell is="2 phone-12">
+      </Col>
+      <Col xs="12" md="2">
         <b>Inscrits</b>
-      </Cell>
+      </Col>
       </Row>
         <ListeCreneaux 
           creneaux={this.state.creneaux} 
@@ -373,8 +390,19 @@ render: function() {
         />
         </div>;
    } else if (this.state.inscription) {
-     affichageCreneaux = <Row is="start nospace"><Cell is="3 middle"><p><b>Nombre de places</b></p></Cell>
-        <Cell is="2">
+     affichageCreneaux = <Row >
+          <Col xs="12" md="5">
+       <TextField
+          style={styles.centPourCent}
+            type="text"
+            ref="nbJours"
+            name="nbJours"
+            defaultValue={this.props.evenement.jours}
+            disabled={!this.state.journee}
+            floatingLabelText="Nb de jour(s)"
+          />
+        </Col>
+        <Col xs="12" md="5" md-offset="2">
         <TextField
             style={styles.centPourCent}
             type="text"
@@ -382,14 +410,28 @@ render: function() {
             name="nbTotalPlaces"
             defaultValue={this.state.nbTotalPlaces}
             floatingLabelStyle={styles.floatingLabel}
-          /></Cell></Row>;
-   } else affichageCreneaux = null;
+            floatingLabelText="Nb de places"
+          /></Col></Row>;
+   } else{
+     affichageCreneaux = <Row >
+          <Col xs="12" md="5">
+       <TextField
+          style={styles.centPourCent}
+            type="text"
+            ref="nbJours"
+            name="nbJours"
+            defaultValue={this.props.evenement.jours}
+            disabled={!this.state.journee}
+            floatingLabelText="Nb de jour(s)"
+          />
+        </Col></Row>;
+   }
    let boutonEnvoie;
     switch(this.props.operation) {
        case 'add':
          boutonEnvoie = 
-              <Row is="nospace">
-              <Cell is="3 offset-6">
+              <Row >
+              <Col xs="3" xs-offset="6">
                 <FlatButton
                   label="Annuler"
                   labelPosition="after"
@@ -402,8 +444,8 @@ render: function() {
                         className="fa fa-ban"
                       />}
                 />
-                </Cell>
-              <Cell is="3">
+                </Col>
+              <Col xs="3">
                <FlatButton
                   label="Créer"
                   labelPosition="after"
@@ -415,13 +457,13 @@ render: function() {
                     <FontIcon
                         className="fa fa-plus-square-o"
                       />}
-                /></Cell>
+                /></Col>
               </Row>;
          break;
       case 'edit':
           boutonEnvoie = 
               <Row is="nospace">
-              <Cell is="3 offset-3">
+              <Col xs="3" xs-offset="3">
                     <FlatButton
                         label="Annuler"
                         labelPosition="after"
@@ -434,8 +476,8 @@ render: function() {
                               className="fa fa-ban"
                             />}
                       />
-              </Cell>
-              <Cell is="3">
+              </Col>
+              <Col xs="3">
                 <FlatButton
                   label="Effacer"
                   labelPosition="after"
@@ -448,8 +490,8 @@ render: function() {
                         className="fa fa-trash-o"
                       />}
                 />
-              </Cell>
-              <Cell is="3">
+              </Col>
+              <Col xs="3">
                   <FlatButton
                   label="Editer"
                   labelPosition="after"
@@ -462,7 +504,7 @@ render: function() {
                         className="fa fa-pencil-square-o"
                       />}
                 />
-              </Cell>
+              </Col>
               </Row>;
         break;
      }
@@ -471,12 +513,9 @@ render: function() {
     return (
 
      <form className="noSpace">
-      <Grid
-        options={optionsGrid}
-      >
-      <div className="noSpace">
+      <Container  fluid={true}>
       <Row>
-      <Cell is="7 phone-12">
+      <Col xs="12" md="7">
        <TextField
             style={styles.centPourCent}
             type="text"
@@ -487,8 +526,8 @@ render: function() {
             floatingLabelText="Titre"
             floatingLabelStyle={styles.floatingLabel}
           />
-      </Cell>
-      <Cell is="5 phone-12">
+      </Col>
+      <Col xs="12" md="5">
         <SelectField 
           style={styles.centPourCent}
           value={this.state.par} 
@@ -502,10 +541,10 @@ render: function() {
           <MenuItem value={"La-Salle-des-Machines"} primaryText="La Salle des Machines" />
           <MenuItem value={"Autres"} primaryText="Autres" />
         </SelectField>
-        </Cell>
+        </Col>
       </Row>
         <Row>
-        <Cell is="7 phone-12">
+        <Col xs="12" md="7">
        <TextField
           style={styles.centPourCent}
             type="text"
@@ -516,8 +555,8 @@ render: function() {
             floatingLabelText="Lieu"
             floatingLabelStyle={styles.floatingLabel}
           />
-        </Cell>
-        <Cell is="4 phone-12 ">
+        </Col>
+        <Col xs ="12" md="5">
           <Checkbox
           style={styles.marginTop15}
             label="sur inscription ?"
@@ -526,10 +565,10 @@ render: function() {
             onCheck={this.checkBoxChangedInscription}
             checked={this.state.inscription}
           />
-        </Cell>
+        </Col>
         </Row>
         <Row className="spaceTop10">
-        <Cell is="5 phone-6">
+        <Col xs="12" md="5">
           <Checkbox
             label="Journée(s) entière(s) ?"
             labelPosition="left"
@@ -538,24 +577,26 @@ render: function() {
             style={styles.marginTop10}
             checked = {this.state.journee}
           />
-        </Cell>
-        <Cell is="5 phone-12">
-          <div>Si oui, précisez le nombre de jour(s)</div>
-          </Cell>
-          <Cell is="2 phone-12">
-       <TextField
-          style={styles.centPourCent}
-            type="text"
-            ref="nbJours"
-            name="nbJours"
-            defaultValue={this.props.evenement.jours}
-            disabled={!this.state.journee}
-          />
-        </Cell>
+        </Col>
+
       </Row>
       {affichageCreneaux}
+      
+            <Row>
+      <Col xs="12" md="12">
+       <TextField
+            style={styles.centPourCent}
+            type="text"
+            ref="lienBilleterie"
+            name="lienBilleterie"
+            defaultValue={this.props.evenement.lienBilleterie}
+            floatingLabelText="Lien vers la billeterie"
+            floatingLabelStyle={styles.floatingLabel}
+          />
+      </Col></Row>
+      
       <Row>
-            <Cell is="12">
+            <Col xs="12" md="12">
         <TextField
           style={styles.centPourCent}
             type="text"
@@ -570,19 +611,18 @@ render: function() {
             defaultValue={this.props.evenement.description}
           />
 
-      </Cell>
+      </Col>
       </Row>
       <Row>
-      <Cell is="4 phone-12" >
+      <Col xs="12" md="4" >
         <CreateDropzone meta={metaImage}/>
-      </Cell>
-      <Cell is="6 phone-12">
+      </Col>
+      <Col xs="12" md="6">
       <ListeImagesEvenement structure={this.state.par} retourChoix={this.retourChoix} choixImg={this.state.choixImage}/>
-      </Cell>
+      </Col>
       </Row>
       {boutonEnvoie}
-      </div>
-      </Grid>
+      </Container>
       </form>
 
     );
