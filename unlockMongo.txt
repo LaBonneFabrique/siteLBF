@@ -1,1 +1,0 @@
-rm -rf .meteor/local/db/mongod.lock .meteor/local/db/local.* .meteor/local/db/journal .meteor/local/bundler-cache/linker/

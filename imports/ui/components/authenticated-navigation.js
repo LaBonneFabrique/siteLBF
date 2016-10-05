@@ -81,6 +81,7 @@ export  class AuthenticatedNavigation extends React.Component {
   render() {
     let agenda;
     let listeAdherents;
+    let listeParticipants;
     
     if (this.state.autorisation) {
 
@@ -100,6 +101,14 @@ export  class AuthenticatedNavigation extends React.Component {
               primaryText='Liste des adhérents' 
               leftIcon={
                 <FontAwesome name='users' size="2x" />
+              }
+              />;
+    listeParticipants = <MenuItem 
+              containerElement={<Link to="/participants" />}
+              linkButton={true}
+              primaryText='Liste des participants' 
+              leftIcon={
+                <FontAwesome name='user-secret' size="2x" />
               }
               />
     };
@@ -132,6 +141,7 @@ export  class AuthenticatedNavigation extends React.Component {
               />
             {agenda}
             {listeAdherents}
+            {listeParticipants}
             <MenuItem 
                 onClick={ this.handleLogout }
                 primaryText='Se déconnecter' 

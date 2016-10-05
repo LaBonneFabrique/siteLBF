@@ -59,7 +59,6 @@ var styles = {
 var LesCartes = React.createClass({
     render() {
         const isPair = Math.round(this.props.rang/2)%2==0?true:false;
-        console.log(isPair)
         var nbPlacesrestantes=0;
         this.props.carte.creneaux.map(function(creneau){
             nbPlacesrestantes += creneau.places-creneau.inscrits.length;
