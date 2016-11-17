@@ -49,7 +49,10 @@ const Calendar = React.createClass({
                 ],
       inscription: false,
       lienImage:"",
-      lienBilleterie:""
+      lienBilleterie:"",
+      frequence:"une-fois",
+      nbSeances:1,
+      publie:false
     }
     };
   },
@@ -106,7 +109,10 @@ const Calendar = React.createClass({
                 ],
       inscription: false,
       lienImage:"",
-      lienBilleterie:""
+      lienBilleterie:"",
+      frequence:"une-fois",
+      nbSeances:1,
+      publie:false
     };
      self.setState({NEWEVE: nouveau});
      self.open();
@@ -135,7 +141,10 @@ const Calendar = React.createClass({
       creneaux: evenement.creneaux,
       inscription: evenement.inscription,
       lienImage: evenement.lienImage,
-      lienBilleterie: evenement.lienBilleterie
+      lienBilleterie: evenement.lienBilleterie,
+      frequence:evenement.frequence,
+      nbSeances:evenement.nbSeances,
+      publie:evenement.publie
     };
         }
         })

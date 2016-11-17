@@ -197,7 +197,10 @@ getInitialState() {
      jours: this.props.evenement.jours,
      inscription: this.props.evenement.inscription,
      par: this.props.evenement.par,
-     choixImage:this.props.evenement.lienImage
+     choixImage:this.props.evenement.lienImage,
+     frequence: this.props.evenement.frequence,
+     nbSeances: this.props.evenement.nbSeances,
+     publie: this.props.evenement.publie
     };
   },
   
@@ -208,6 +211,16 @@ onClic: function () {
   this.handleAjoutEve(event);
 
 },
+
+handleAjoutEvePublie: function() {
+  this.setState({publie:true}, () => {this.handleAjoutEve(event);});
+
+},
+handleAjoutEveBrouillon: function() {
+  this.setState({publie:false}, () => {this.handleAjoutEve(event);});
+  
+},
+
 
 handleAjoutEve: function(event) {
   let nbJours = 1;
@@ -233,6 +246,11 @@ handleAjoutEve: function(event) {
   const allDay = this.state.journee;
   const inscription = this.state.inscription;
   const lienImage = this.state.choixImage;
+  const frequence = this.state.frequence;
+  const nbSeances = Number(this.refs.nbSeances.getValue());
+  const publie = this.state.publie;
+  console.log("publication : "+publie)
+
   
   let start = moment().toDate();
   let end = moment().toDate();
@@ -247,9 +265,9 @@ handleAjoutEve: function(event) {
       
       let evenement;
       if (lienBilleterie=="") {
-        evenement = {titre, start, end, allDay, nbJours, nbTotalPlaces, type, lieu, description, creneaux, inscription, lienImage,};
+        evenement = {titre, start, end, allDay, nbJours, nbTotalPlaces, type, lieu, description, creneaux, inscription, lienImage, frequence, nbSeances, publie,};
         } else {
-          evenement = {titre, start, end, allDay, nbJours, nbTotalPlaces, type, lieu, description, creneaux, inscription, lienImage, lienBilleterie,};
+          evenement = {titre, start, end, allDay, nbJours, nbTotalPlaces, type, lieu, description, creneaux, inscription, lienImage, lienBilleterie, frequence, nbSeances, publie,};
         }
         
       insertEvenement.call(evenement, (error) => {
@@ -264,13 +282,12 @@ handleAjoutEve: function(event) {
     case 'edit':
       start = this.props.evenement.start;
       end = this.props.evenement.end;
-
       let evenementId = this.props.eveId;
         let update;
         if (lienBilleterie=="") {
-          update = {titre, start, end, allDay, nbJours, nbTotalPlaces, type, lieu, description, creneaux, inscription, lienImage,};
+          update = {titre, start, end, allDay, nbJours, nbTotalPlaces, type, lieu, description, creneaux, inscription, lienImage, frequence, nbSeances, publie,};
         } else {
-          update = {titre, start, end, allDay, nbJours, nbTotalPlaces, type, lieu, description, creneaux, inscription, lienImage, lienBilleterie,};
+          update = {titre, start, end, allDay, nbJours, nbTotalPlaces, type, lieu, description, creneaux, inscription, lienImage, lienBilleterie, frequence, nbSeances, publie,};
         }
       updateEvenement.call({evenementId, update}, (error) => {
       if (error) {
@@ -361,11 +378,16 @@ handleChangePar: function(event, index, value) {
 this.setState({par: value});
 },
 
+handleChangeFrequence: function(event, index, value) {
+this.setState({frequence: value});
+},
+
 retourChoix: function(id) {
   this.setState({choixImage: id});
 },
   
 render: function() {
+  console.log(this.state.publie)
     var metaImage = {structure: this.state.par, utilisation: 'accueil'};
     let affichageCreneaux;
    if(!this.state.journee) {
@@ -431,7 +453,7 @@ render: function() {
        case 'add':
          boutonEnvoie = 
               <Row >
-              <Col xs="3" xs-offset="6">
+              <Col xs="3" xs-offset="2">
                 <FlatButton
                   label="Annuler"
                   labelPosition="after"
@@ -445,25 +467,40 @@ render: function() {
                       />}
                 />
                 </Col>
-              <Col xs="3">
-               <FlatButton
-                  label="Créer"
+                           <Col xs="3">
+                  <FlatButton
+                  label="Brouillon"
+                  labelPosition="after"
+                  backgroundColor={couleurs.coworking}
+                  hoverColor={couleurs.grisLBF}
+                  style={styles.blanc}
+                  onClick={this.handleAjoutEveBrouillon}
+                  icon={
+                    <FontIcon
+                        className="fa fa-pencil-square-o"
+                      />}
+                />
+              </Col>
+              <Col xs="4">
+                  <FlatButton
+                  label="Créer & Publier"
                   labelPosition="after"
                   backgroundColor={couleurs.jardin}
                   hoverColor={couleurs.grisLBF}
                   style={styles.blanc}
-                  onClick={this.handleAjoutEve}
+                  onClick={this.handleAjoutEvePublie}
                   icon={
                     <FontIcon
-                        className="fa fa-plus-square-o"
+                        className="fa fa-pencil-square-o"
                       />}
-                /></Col>
+                />
+              </Col>
               </Row>;
          break;
       case 'edit':
           boutonEnvoie = 
               <Row is="nospace">
-              <Col xs="3" xs-offset="3">
+              <Col xs="3" xs-offset="0">
                     <FlatButton
                         label="Annuler"
                         labelPosition="after"
@@ -493,12 +530,26 @@ render: function() {
               </Col>
               <Col xs="3">
                   <FlatButton
-                  label="Editer"
+                  label="Brouillon"
+                  labelPosition="after"
+                  backgroundColor={couleurs.coworking}
+                  hoverColor={couleurs.grisLBF}
+                  style={styles.blanc}
+                  onClick={this.handleAjoutEveBrouillon}
+                  icon={
+                    <FontIcon
+                        className="fa fa-pencil-square-o"
+                      />}
+                />
+              </Col>
+              <Col xs="3">
+                  <FlatButton
+                  label="Publier"
                   labelPosition="after"
                   backgroundColor={couleurs.jardin}
                   hoverColor={couleurs.grisLBF}
                   style={styles.blanc}
-                  onClick={this.handleAjoutEve}
+                  onClick={this.handleAjoutEvePublie}
                   icon={
                     <FontIcon
                         className="fa fa-pencil-square-o"
@@ -564,6 +615,33 @@ render: function() {
             id="besoinInscription" 
             onCheck={this.checkBoxChangedInscription}
             checked={this.state.inscription}
+          />
+        </Col>
+        </Row>
+        <Row>
+        <Col xs="12" md="5">
+        <SelectField 
+          style={styles.centPourCent}
+          value={this.state.frequence} 
+          onChange={this.handleChangeFrequence} 
+          floatingLabelText="Fréquence"
+          floatingLabelStyle={styles.floatingLabel}
+          ref="frequence">
+          <MenuItem value={"une-fois"} primaryText="une fois" />
+          <MenuItem value={"hebdomadaire"} primaryText="hebdomadaire" />
+          <MenuItem value={"bimensuelle"} primaryText="bimensuelle" />
+        </SelectField>
+        </Col>
+                <Col xs="12" md="7">
+       <TextField
+          style={styles.centPourCent}
+            type="text"
+            ref="nbSeances"
+            name="nbSeances"
+            defaultValue={this.props.evenement.nbSeances}
+            placeholder="Nombre de séances"
+            floatingLabelText="Nombre de séances"
+            floatingLabelStyle={styles.floatingLabel}
           />
         </Col>
         </Row>

@@ -81,6 +81,19 @@ Evenements.schema = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Url,
     optional: true
+  },
+  "frequence":{
+    type: String,
+    optional: true,
+    allowedValues: ['une-fois', 'hebdomadaire', 'bimensuelle']
+  },
+  "nbSeances":{
+    type: Number,
+    optional: true
+  },
+  "publie":{
+    type:Boolean,
+    optional: true
   }
 });
 
