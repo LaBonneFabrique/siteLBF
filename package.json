@@ -68,7 +68,7 @@
     "fs-plus": ">=2.9.1",
     "fullcalendar": "^2.7.2",
     "get-size": ">=2.0.2",
-    "jquery": "^2.2.4",
+    "jquery" ~> "3.0.0",
     "jquery-validation": "^1.15.0",
     "lodash": ">=3.10.1",
     "masonry-layout": ">=4.1.0",
